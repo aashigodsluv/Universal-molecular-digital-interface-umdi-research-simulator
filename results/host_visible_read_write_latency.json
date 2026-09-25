@@ -1,0 +1,50 @@
+[
+  {
+    "trials": 250,
+    "cold_read_success_rate": 1.0,
+    "hot_read_success_rate": 1.0,
+    "write_success_rate": 1.0,
+    "roundtrip_success_rate": 1.0,
+    "mean_cold_read_latency_ms": 133.64075721576782,
+    "median_cold_read_latency_ms": 132.71832069785773,
+    "p95_cold_read_latency_ms": 163.11640289128567,
+    "min_cold_read_latency_ms": 100.67459255752676,
+    "max_cold_read_latency_ms": 182.48846134951563,
+    "mean_hot_read_latency_ms": 0.1999999999999942,
+    "median_hot_read_latency_ms": 0.19999999999998863,
+    "p95_hot_read_latency_ms": 0.20000000000000284,
+    "min_hot_read_latency_ms": 0.19999999999998863,
+    "max_hot_read_latency_ms": 0.20000000000000284,
+    "mean_write_latency_ms": 159.1634294217905,
+    "median_write_latency_ms": 153.21157062422782,
+    "p95_write_latency_ms": 240.59089889796925,
+    "min_write_latency_ms": 87.35431908605732,
+    "max_write_latency_ms": 318.1920674210399,
+    "mean_roundtrip_latency_ms": 287.0990348907851,
+    "median_roundtrip_latency_ms": 280.4454201445551,
+    "p95_roundtrip_latency_ms": 368.13133104347025,
+    "min_roundtrip_latency_ms": 201.48146510697052,
+    "max_roundtrip_latency_ms": 416.2785272357787,
+    "cold_hot_acceleration_ratio": 668.2037860788585,
+    "cold_read_stage_mean_ms": {
+      "addressing": 8.01666937901815,
+      "molecular_access": 50.99123461694036,
+      "sensing": 35.29185076032447,
+      "basecalling": 18.234717372706026,
+      "decoding": 12.066241704625742,
+      "error_correction": 8.040043382153032,
+      "buffer": 1.0
+    },
+    "hot_read_stage_mean_ms": {
+      "cache": 0.20000000000000068
+    },
+    "write_stage_mean_ms": {
+      "addressing": 8.065233868472305,
+      "encoding": 5.966508224838727,
+      "molecular_write": 129.0547791120428,
+      "write_verification": 15.076908216436564,
+      "buffer": 1.0
+    },
+    "hot_cache_hits": 250
+  }
+]

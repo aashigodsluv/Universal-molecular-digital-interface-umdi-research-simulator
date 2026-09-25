@@ -1,0 +1,4580 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Universal Molecular Digital Interface (UMDI) Research Simulator</title>
+<style>
+:root{
+  --bg:#070a10;
+  --panel:#0e1520;
+  --panel2:#0a1019;
+  --line:#1c2a3c;
+  --text:#eaf1fa;
+  --muted:#8ea1b9;
+  --cyan:#35d7ff;
+  --violet:#9b7bff;
+  --green:#39e29b;
+  --amber:#ffc857;
+  --red:#ff6577;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:radial-gradient(circle at 15% 0%,#12243b 0,#070a10 40%);
+  color:var(--text);
+  font:14px Inter,Segoe UI,Arial,sans-serif;
+}
+
+header{
+  padding:20px 26px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#070a10ee;
+  backdrop-filter:blur(12px);
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+
+.brand{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
+.logo{
+  width:40px;
+  height:40px;
+  border:1px solid #31536d;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  color:var(--cyan);
+  box-shadow:0 0 24px #35d7ff25;
+}
+
+h1{
+  font-size:18px;
+  margin:0;
+}
+
+.sub{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:3px;
+}
+
+.pill{
+  padding:7px 11px;
+  border:1px solid #25405a;
+  border-radius:999px;
+  color:var(--cyan);
+  font-size:11px;
+  letter-spacing:.08em;
+  background:#0b1320;
+  cursor:pointer;
+  user-select:none;
+}
+
+.pill:hover{
+  border-color:var(--cyan);
+  box-shadow:0 0 18px #35d7ff18;
+}
+
+.pill.quick{
+  color:var(--amber);
+  border-color:#5d4b26;
+}
+
+main{
+  display:grid;
+  grid-template-columns:350px 1fr;
+  gap:18px;
+  padding:20px;
+  max-width:1600px;
+  margin:auto;
+}
+
+.panel{
+  background:linear-gradient(180deg,#101824,#0c121c);
+  border:1px solid var(--line);
+  border-radius:16px;
+  box-shadow:0 15px 45px #0006;
+}
+
+.panel h2{
+  font-size:12px;
+  margin:0;
+  padding:14px 16px;
+  border-bottom:1px solid var(--line);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#cbd7e7;
+}
+
+.controls{
+  padding:15px;
+}
+
+.group-title{
+  margin:18px 0 12px;
+  padding-top:14px;
+  border-top:1px solid var(--line);
+  color:var(--cyan);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+}
+
+.row{
+  margin-bottom:14px;
+}
+
+.row label{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  color:#b9c6d7;
+  margin-bottom:7px;
+  font-size:12px;
+}
+
+.value{
+  color:var(--cyan);
+}
+
+select,
+input{
+  width:100%;
+  background:#080d16;
+  color:var(--text);
+  border:1px solid #26364c;
+  border-radius:9px;
+  padding:9px;
+}
+
+input[type=checkbox]{
+  width:auto;
+  transform:scale(1.15);
+  accent-color:var(--cyan);
+}
+
+.checkbox-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border:1px solid #26364c;
+  background:#080d16;
+  border-radius:9px;
+  padding:10px;
+}
+
+.checkbox-row span{
+  font-size:12px;
+  color:#b9c6d7;
+}
+
+button{
+  border:1px solid #31516b;
+  background:#122337;
+  color:#dcecff;
+  padding:10px 13px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+button:hover{
+  border-color:var(--cyan);
+  box-shadow:0 0 18px #35d7ff18;
+}
+
+button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+  box-shadow:none;
+}
+
+.primary{
+  background:linear-gradient(135deg,#12465b,#34236c);
+  border-color:#3a7894;
+  width:100%;
+  color:white;
+}
+
+.btns{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:10px;
+}
+
+.dashboard{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+}
+
+.metric{
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:#0d141f;
+}
+
+.metric .k{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.metric .v{
+  font-size:20px;
+  margin-top:6px;
+}
+
+.cyan{color:var(--cyan)}
+.green{color:var(--green)}
+.amber{color:var(--amber)}
+.red{color:var(--red)}
+
+.details{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+  margin-top:10px;
+}
+
+.details .metric .v{
+  font-size:16px;
+}
+
+.stack{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:14px;
+  margin-top:14px;
+}
+
+.diagram{
+  padding:0 0 16px;
+  min-height:380px;
+}
+
+.pipeline{
+  display:grid;
+  gap:7px;
+  padding:16px;
+}
+
+.stage{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:11px 13px;
+  background:#0a111b;
+  border:1px solid #1a2b40;
+  border-radius:11px;
+}
+
+.dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 13px var(--cyan);
+}
+
+.arrow{
+  text-align:center;
+  color:#52667e;
+}
+
+.channel-summary{
+  padding:0 16px 10px;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.channels{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(52px,1fr));
+  gap:7px;
+  padding:0 16px;
+  max-height:260px;
+  overflow-y:auto;
+}
+
+.ch{
+  height:34px;
+  border-radius:8px;
+  background:#101d2b;
+  border:1px solid #203a52;
+  display:grid;
+  place-items:center;
+  color:#6d829d;
+  font-size:9px;
+}
+
+.ch.active{
+  background:#113a43;
+  border-color:var(--cyan);
+  color:#d9fbff;
+  box-shadow:0 0 16px #35d7ff22;
+}
+
+.chart{
+  padding:0 16px 16px;
+}
+
+.chart-controls{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:12px 0;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.scaling-status{
+  color:var(--cyan);
+}
+
+.bars{
+  height:240px;
+  display:flex;
+  align-items:end;
+  gap:8px;
+  padding:20px 8px 8px;
+  border-left:1px solid #26364b;
+  border-bottom:1px solid #26364b;
+  overflow-x:auto;
+}
+
+.bar-wrap{
+  min-width:52px;
+  flex:1;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:center;
+  position:relative;
+}
+
+.bar{
+  width:75%;
+  background:linear-gradient(180deg,var(--cyan),#4b67ff);
+  min-height:4px;
+  border-radius:6px 6px 0 0;
+  position:relative;
+  transition:height .5s ease;
+}
+
+.bar.current{
+  box-shadow:0 0 20px #35d7ff55;
+}
+
+.bar-value{
+  position:absolute;
+  top:-18px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:9px;
+  color:#d9f9ff;
+  white-space:nowrap;
+}
+
+.bar-label{
+  margin-top:8px;
+  font-size:10px;
+  color:var(--muted);
+}
+
+.scaling-note{
+  margin-top:10px;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.5;
+}
+
+.log{
+  margin-top:14px;
+  padding:13px;
+  font-family:ui-monospace,Consolas,monospace;
+  font-size:11px;
+  color:#9fb3ca;
+  background:#070b12;
+  border-radius:10px;
+  height:140px;
+  overflow:auto;
+}
+
+.notice{
+  padding:12px 14px;
+  color:#a9b7c9;
+  font-size:11px;
+  border-top:1px solid var(--line);
+  line-height:1.5;
+}
+
+.mode-note{
+  margin:0 0 14px;
+  padding:10px 12px;
+  border:1px solid #1b3044;
+  background:#09121c;
+  border-radius:10px;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.5;
+}
+
+.hidden{
+  display:none !important;
+}
+
+@media(max-width:1200px){
+  .details{
+    grid-template-columns:repeat(3,1fr);
+  }
+}
+
+@media(max-width:1050px){
+  main{
+    grid-template-columns:1fr;
+  }
+
+  .dashboard{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .details{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .stack{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:650px){
+  .dashboard{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .details{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  header{
+    padding:16px;
+  }
+}
+
+.core-experiments{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:14px;
+  margin-top:14px;
+}
+
+.exp-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+  padding:16px;
+}
+
+.exp-card{
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:#0d141f;
+}
+
+.exp-card .k{
+  color:var(--muted);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+
+.exp-card .v{
+  margin-top:7px;
+  font-size:19px;
+}
+
+.exp-card .hint{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.4;
+}
+
+.stage-section{
+  padding:0 16px 16px;
+}
+
+.stage-section h3{
+  margin:4px 0 10px;
+  color:#cbd7e7;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+}
+
+.stage-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:8px;
+}
+
+.stage-chip{
+  border:1px solid #1c3044;
+  background:#09121c;
+  border-radius:9px;
+  padding:9px 10px;
+}
+
+.stage-chip .name{
+  color:var(--muted);
+  font-size:9px;
+  text-transform:uppercase;
+}
+
+.stage-chip .time{
+  margin-top:4px;
+  color:var(--cyan);
+  font-size:13px;
+}
+
+.target-table-wrap{
+  padding:0 16px 16px;
+  overflow-x:auto;
+}
+
+.target-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:11px;
+}
+
+.target-table th,
+.target-table td{
+  padding:9px 10px;
+  border-bottom:1px solid var(--line);
+  text-align:right;
+  white-space:nowrap;
+}
+
+.target-table th:first-child,
+.target-table td:first-child{
+  text-align:left;
+}
+
+.target-table th{
+  color:var(--muted);
+  font-size:9px;
+  text-transform:uppercase;
+}
+
+.pass{color:var(--green)}
+.fail-target{color:var(--red)}
+
+.experiment-actions{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:12px 16px;
+  border-bottom:1px solid var(--line);
+  flex-wrap:wrap;
+}
+
+.experiment-actions .status{
+  color:var(--muted);
+  font-size:10px;
+}
+
+@media(max-width:1200px){
+  .exp-grid{grid-template-columns:repeat(3,1fr)}
+}
+
+@media(max-width:650px){
+  .exp-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+
+.tech-gap-controls{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+  padding:16px;
+}
+
+.tech-gap-controls .row{
+  margin:0;
+}
+
+.tech-gap-results{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  padding:0 16px 16px;
+}
+
+@media(max-width:1050px){
+  .tech-gap-controls{grid-template-columns:repeat(3,1fr)}
+}
+
+@media(max-width:650px){
+  .tech-gap-controls,
+  .tech-gap-results{grid-template-columns:1fr}
+}
+
+
+.optimization-wrap{
+  padding:0 16px 16px;
+  overflow-x:auto;
+}
+
+.optimization-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:0 16px 12px;
+  flex-wrap:wrap;
+}
+
+.optimization-head .bottleneck{
+  font-size:12px;
+  color:var(--amber);
+}
+
+.optimization-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:11px;
+}
+
+.optimization-table th,
+.optimization-table td{
+  padding:9px 10px;
+  border-bottom:1px solid var(--line);
+  text-align:right;
+  white-space:nowrap;
+}
+
+.optimization-table th:first-child,
+.optimization-table td:first-child,
+.optimization-table th:nth-child(2),
+.optimization-table td:nth-child(2){
+  text-align:left;
+}
+
+.optimization-table th{
+  color:var(--muted);
+  font-size:9px;
+  text-transform:uppercase;
+}
+
+
+
+/* Live UMDI transaction visualization */
+.pipeline-live-head{
+  padding:14px 16px 0;
+}
+
+.pipeline-status-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:9px;
+}
+
+.pipeline-state{
+  color:var(--cyan);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.pipeline-eta{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.pipeline-progress{
+  height:7px;
+  border:1px solid #20364d;
+  background:#070c13;
+  border-radius:999px;
+  overflow:hidden;
+}
+
+.pipeline-progress-fill{
+  width:0%;
+  height:100%;
+  background:linear-gradient(90deg,var(--cyan),var(--violet));
+  transition:width .08s linear;
+  box-shadow:0 0 16px #35d7ff55;
+}
+
+.pipeline-block{
+  margin-top:8px;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.stage{
+  position:relative;
+  overflow:hidden;
+  transition:border-color .18s ease,background .18s ease,box-shadow .18s ease,opacity .18s ease;
+}
+
+.stage::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:var(--stage-progress,0%);
+  height:2px;
+  background:var(--cyan);
+  transition:width .06s linear;
+}
+
+.stage.pending{
+  opacity:.48;
+}
+
+.stage.running{
+  opacity:1;
+  border-color:var(--cyan);
+  background:#0b1b28;
+  box-shadow:0 0 20px #35d7ff20;
+}
+
+.stage.running .dot{
+  animation:umdiPulse .75s infinite alternate;
+}
+
+.stage.done{
+  opacity:1;
+  border-color:#245b49;
+  background:#0a1917;
+}
+
+.stage.done .dot{
+  background:var(--green);
+  box-shadow:0 0 13px var(--green);
+}
+
+.stage.skipped{
+  opacity:.3;
+}
+
+.stage-live-time{
+  margin-left:auto;
+  color:var(--muted);
+  font:10px ui-monospace,Consolas,monospace;
+  white-space:nowrap;
+}
+
+.ch.processing{
+  background:#113a43;
+  border-color:var(--cyan);
+  color:#d9fbff;
+  box-shadow:0 0 16px #35d7ff22;
+  animation:channelPulse .7s infinite alternate;
+}
+
+.ch.complete{
+  border-color:#245b49;
+  color:var(--green);
+}
+
+@keyframes umdiPulse{
+  from{transform:scale(.8);opacity:.55}
+  to{transform:scale(1.45);opacity:1}
+}
+
+@keyframes channelPulse{
+  from{filter:brightness(.85)}
+  to{filter:brightness(1.35)}
+}
+
+
+.preset-group{
+  grid-template-columns:repeat(3,1fr);
+}
+
+.preset-active{
+  border-color:var(--cyan) !important;
+  box-shadow:0 0 18px #35d7ff28 !important;
+  background:#123149 !important;
+  color:#eafcff !important;
+}
+
+
+/* ===== BioSSD focused UI redesign ===== */
+html,body{height:100%;overflow:hidden} body{background:radial-gradient(circle at 15% 0%,#12243b 0,#070a10 42%)}
+header{height:72px;padding:12px 20px;z-index:20}.header-actions{display:flex;gap:12px;align-items:center}.mode-switch{display:flex;border:1px solid #25364d;border-radius:11px;padding:3px;background:#090f18}.mode-btn{border:0;background:transparent;padding:8px 14px;color:var(--muted);box-shadow:none}.mode-btn.active{color:white;background:linear-gradient(135deg,#12364f,#24306a);box-shadow:0 0 18px #35d7ff22}.header-help{padding:8px 12px}
+main{height:calc(100vh - 72px);max-width:none;margin:0;padding:12px;grid-template-columns:300px minmax(0,1fr);gap:12px;overflow:hidden}.panel{border-radius:12px}.panel h2{padding:11px 14px}.controls{padding:10px}.compact-note{font-size:11px;padding:9px;margin-bottom:8px}.config-group{border:1px solid var(--line);border-radius:9px;margin:7px 0;background:#0a111b;overflow:hidden}.config-group summary{cursor:pointer;padding:9px 11px;color:#d3dfed;font-size:11px;font-weight:700;letter-spacing:.03em;list-style:none}.config-group summary::-webkit-details-marker{display:none}.config-group summary:after{content:'›';float:right;color:var(--muted);transform:rotate(90deg)}.config-group[open] summary:after{transform:rotate(-90deg)}.config-group-body{padding:4px 10px 2px;border-top:1px solid var(--line)}.group-help{color:var(--muted);font-size:10px;padding:6px 0 8px}.row{margin-bottom:9px}.row label{margin-bottom:5px;font-size:11px}select,input{padding:7px;border-radius:7px}.checkbox-row{padding:8px}.mini-label{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em;margin:10px 0 5px}.btns{margin-top:4px}.primary{margin-top:8px}.config-summary{display:flex;justify-content:space-between;gap:8px;margin-top:9px;padding:8px 9px;border:1px solid var(--line);border-radius:8px;font-size:10px;color:var(--muted)}.config-summary b{color:#cdd8e6}.compact-disclaimer{font-size:9.5px;padding:9px 12px}main>section.panel{height:100%;overflow:auto}.workspace-shell{min-width:0;display:flex;flex-direction:column;height:100%;overflow:hidden}.workspace-tabs{display:flex;gap:4px;padding:4px 5px;background:#0b111a;border:1px solid var(--line);border-radius:11px;margin-bottom:8px;overflow-x:auto;flex:0 0 auto}.workspace-tab{background:transparent;border:0;padding:8px 13px;color:var(--muted);white-space:nowrap;box-shadow:none}.workspace-tab.active{background:#10243a;color:var(--cyan);box-shadow:inset 0 -2px 0 var(--cyan)}.workspace-panes{min-height:0;flex:1;overflow:hidden}.workspace-pane{display:none;height:100%;overflow:auto;padding-right:3px}.workspace-pane.active{display:block}.dashboard{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.metric{padding:11px!important;min-height:72px}.metric .v{font-size:18px!important}.details{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:7px!important;margin-top:8px!important}.details .metric{min-height:60px}.details .metric .v{font-size:15px!important}.overview-hint{margin-top:8px;padding:9px 11px;border:1px dashed #26364c;border-radius:9px;color:var(--muted);font-size:11px}.core-experiments{display:block}.workspace-pane>.panel,.workspace-pane .panel{margin-top:0!important}.stack{display:block}.diagram{max-width:none}.scaling-inline-controls{padding:10px 14px 0}.scaling-inline-controls .row{max-width:500px}.benchmark-panel{height:auto}.bench-subtitle{color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;margin-left:8px}.benchmark-intro{padding:12px 14px;color:var(--muted);font-size:12px}.benchmark-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:10px;padding:0 14px 12px}.benchmark-box{border:1px solid var(--line);border-radius:10px;padding:12px;background:#0a111b}.benchmark-box h3{margin:0 0 10px;font-size:12px}.benchmark-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px}.benchmark-grid label{display:grid;grid-template-columns:max-content 100px max-content 18px;gap:6px;align-items:center;justify-content:start;color:#b9c6d7;font-size:11px}.benchmark-grid input{width:100px}.bench-edit{color:var(--cyan);font-size:12px;opacity:.85;display:inline-block;transform:rotate(45deg);transform-origin:center}.benchmark-context{grid-template-columns:minmax(0,1fr)!important}.benchmark-context #simulationConfigPanel{display:none}.workload-intro{margin:0 0 10px;padding:10px 12px;border:1px solid #23415a;border-radius:10px;background:#091522;color:#b9c8d8;font-size:11px;line-height:1.5}.benchmark-note{margin:0 14px 12px;padding:10px 12px;border:1px solid #30445b;border-radius:9px;background:#09121c;color:var(--muted);font-size:11px;line-height:1.5}.benchmark-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.benchmark-actions .primary{width:auto;margin:0}.benchmark-result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.benchmark-result-grid div{padding:10px;border:1px solid #1d2c40;border-radius:8px}.benchmark-result-grid span{display:block;color:var(--muted);font-size:10px;margin-bottom:4px}.benchmark-result-grid strong{font-size:17px;color:#eaf6ff}.benchmark-comparison{margin:0 14px 12px;padding:12px;border:1px solid #2b5a72;border-radius:10px;background:#0a1721}.comparison-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:6px;font-size:11px}.comparison-grid>div{padding:7px;border-bottom:1px solid #1c2a3c}.comparison-head{color:var(--cyan);font-weight:700}.help-drawer{position:fixed;right:12px;top:84px;width:330px;max-height:calc(100vh - 96px);z-index:50;background:#0d1520;border:1px solid #2b4058;border-radius:12px;box-shadow:0 20px 60px #000b;overflow:hidden}.help-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}.help-head button{padding:3px 8px}.help-body{padding:13px 16px;overflow:auto;max-height:calc(100vh - 150px);font-size:12px;color:#c2cfde}.help-body h3{font-size:12px;color:var(--cyan);margin:14px 0 6px}.help-body p,.help-body li{line-height:1.5;color:#aab9ca}.onboarding{position:fixed;inset:0;z-index:100;background:#03060bbb;display:grid;place-items:center}.tour-card{width:min(470px,90vw);background:#0e1723;border:1px solid #31536d;border-radius:16px;padding:22px;box-shadow:0 25px 80px #000}.tour-step{color:var(--cyan);font-size:10px;text-transform:uppercase;letter-spacing:.08em}.tour-card h2{margin:8px 0}.tour-card p{color:#b4c2d2;line-height:1.55}.tour-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.tour-actions .primary{width:auto;margin:0}.hidden{display:none!important}
+/* Final UI hierarchy: simulator modes above shared analysis views. */
+.simulator-mode-nav{flex:0 0 auto;margin-bottom:8px;padding:9px 10px;border:1px solid #29435d;border-radius:12px;background:linear-gradient(135deg,#0a1521,#0b111a)}
+.simulator-mode-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.simulator-mode-label{color:#8ea1b9;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.simulator-mode-buttons{display:flex;gap:6px}.simulator-mode-button{background:#0a111b;border:1px solid #29435d;padding:9px 15px;color:#a9b8ca;box-shadow:none}.simulator-mode-button.active{color:#fff;border-color:#35d7ff;background:linear-gradient(135deg,#12364f,#24306a);box-shadow:0 0 18px #35d7ff22}.simulator-objective{margin-top:7px;color:#8295aa;font-size:10px;line-height:1.4}.analysis-tabs:before{content:'ANALYSIS';align-self:center;padding:0 7px 0 4px;color:#71859c;font-size:9px;font-weight:700;letter-spacing:.1em}.analysis-tabs .workspace-tab{flex:0 0 auto}
+@media(max-width:1100px){main{grid-template-columns:260px 1fr}.details{grid-template-columns:repeat(4,minmax(0,1fr))!important}.benchmark-layout{grid-template-columns:1fr}.dashboard{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){html,body{overflow:auto}header{height:auto;align-items:flex-start;gap:10px;flex-direction:column;position:relative}.header-actions{width:100%;justify-content:space-between}main{height:auto;display:block;overflow:visible}.workspace-shell{height:auto;margin-top:10px}.workspace-panes{overflow:visible}.workspace-pane{height:auto}.dashboard{grid-template-columns:repeat(2,1fr)}.details{grid-template-columns:repeat(2,1fr)!important}.benchmark-grid{grid-template-columns:1fr}.help-drawer{left:10px;right:10px;width:auto}}
+
+
+.pipeline-arch-note{font-size:12px;color:var(--cyan);cursor:help;margin-left:6px;vertical-align:1px}.layer-tag{display:inline-flex;align-items:center;margin-left:8px;padding:2px 6px;border:1px solid #24506b;border-radius:999px;color:#7ddfff;background:#0a1b28;font-size:9px;font-weight:700;letter-spacing:.03em;white-space:nowrap}.layer-tag.functional{color:#d8b8ff;border-color:#5b3f78;background:#171024}.benchmark-grid label.bench-modified{color:#ffd166}.benchmark-grid label.bench-modified input{border-color:#d9a62d;box-shadow:0 0 0 2px #d9a62d22}.benchmark-grid label.bench-modified:before{content:'Modified';grid-column:1/-1;font-size:9px;color:#ffd166;letter-spacing:.05em;text-transform:uppercase;margin-bottom:-4px}.benchmark-actions button{cursor:pointer}
+
+/* Refinement pass: identity, sharper instrument styling, coherent scrollbars, live overview pipeline */
+.logo.biossd-logo{padding:0;background:linear-gradient(145deg,#091522,#0b1d2b);cursor:pointer;overflow:hidden;transition:.2s ease}
+.logo.biossd-logo:hover{border-color:var(--cyan);transform:translateY(-1px);box-shadow:0 0 30px #35d7ff38}
+.biossd-logo svg{width:30px;height:30px;fill:none;stroke:var(--cyan);stroke-width:1.8;stroke-linecap:round;filter:drop-shadow(0 0 4px #35d7ff66)}
+.biossd-logo .h2{stroke:var(--violet)}.biossd-logo .rung{stroke:#6ee7ff;opacity:.75}
+.biossd-logo .pulse-dot{fill:#fff;stroke:none;filter:drop-shadow(0 0 6px var(--cyan))}.biossd-logo .pulse-travel{opacity:.95}
+.biossd-logo .helix{stroke-dasharray:50;animation:helixFlow 3.2s linear infinite}.biossd-logo .h2{animation-delay:-1.6s}
+@keyframes helixFlow{to{stroke-dashoffset:-100}}@keyframes bioPulse{0%,100%{opacity:.35;transform:scale(.7);transform-origin:center}50%{opacity:1;transform:scale(1.45);transform-origin:center}}
+.panel,.metric,.workspace-shell,.config-group{border-color:#22364e;box-shadow:0 10px 35px #0005, inset 0 1px 0 #ffffff05}.metric{background:linear-gradient(155deg,#101a28,#0b121d)}
+.workspace-tab.active,.mode-btn.active{filter:saturate(1.18)}
+*{scrollbar-width:thin;scrollbar-color:#238fbd #09111c}*::-webkit-scrollbar{width:9px;height:9px}*::-webkit-scrollbar-track{background:#09111c;border-radius:12px}*::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#35d7ff,#5668ff);border:2px solid #09111c;border-radius:12px}*::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#74e6ff,#9b7bff)}
+.overview-pipeline{margin-top:12px;padding:14px 16px;background:linear-gradient(135deg,#0b1723,#0b1220);border:1px solid #24435b;border-radius:14px;box-shadow:inset 0 1px 0 #ffffff06}
+.overview-pipeline-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:13px}.overview-pipeline-head>div{display:flex;gap:10px;align-items:baseline}.overview-pipeline-head span{font-size:11px;color:var(--muted)}.overview-pipeline-state{color:var(--cyan)!important;text-transform:uppercase;letter-spacing:.06em}
+.mini-flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1.25fr auto 1.15fr auto 1fr;align-items:center;gap:8px}.mini-flow>b{color:#41657d;font-size:18px}.mini-stage{min-width:0;padding:10px 8px;border:1px solid #1e3347;border-radius:10px;text-align:center;color:#8fa4bb;background:#09111b;transition:.22s ease;position:relative}.mini-stage i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#36536a;margin-right:6px}.mini-stage.active{color:white;border-color:#35d7ff;background:#0d2633;box-shadow:0 0 18px #35d7ff22}.mini-stage.active i{background:var(--cyan);box-shadow:0 0 9px var(--cyan)}.mini-stage.done{color:#bfffe1;border-color:#1f6a50}.mini-stage.done i{background:var(--green)}
+.mini-progress{height:3px;background:#122130;border-radius:9px;margin-top:10px;overflow:hidden}.mini-progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));transition:width .25s ease;box-shadow:0 0 10px #35d7ff88}
+.ui-tooltip{position:fixed;z-index:9999;max-width:290px;padding:8px 10px;border:1px solid #31536d;border-radius:8px;background:#08121d;color:#dceafa;font-size:12px;line-height:1.35;box-shadow:0 10px 30px #000a;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .12s,transform .12s}.ui-tooltip.show{opacity:1;transform:none}
+@media(max-width:1100px){.mini-flow{grid-template-columns:repeat(3,1fr)}.mini-flow>b{display:none}}
+
+/* Run-state feedback: keeps the interface visibly alive while Python computes. */
+.metric.is-loading{position:relative;overflow:hidden}
+.metric.is-loading .v{color:transparent!important;user-select:none}
+.metric.is-loading .v::before{content:'Calculating…';color:#7f93aa;position:absolute;font-size:11px;font-weight:600;letter-spacing:.02em}
+.metric.is-loading::after{content:'';position:absolute;inset:0;transform:translateX(-110%);background:linear-gradient(100deg,transparent 20%,rgba(70,210,255,.08) 45%,rgba(151,96,255,.10) 55%,transparent 80%);animation:metricShimmer 1.35s linear infinite;pointer-events:none}
+@keyframes metricShimmer{to{transform:translateX(110%)}}
+.run-activity{display:flex;align-items:center;gap:9px;margin:8px 0;padding:8px 11px;border:1px solid #25415b;border-radius:9px;background:#091522;color:#9eb2c8;font-size:11px;min-height:34px}
+.run-activity.hidden{display:none!important}.run-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan);animation:runPulse .85s ease-in-out infinite alternate}.run-activity strong{color:#dff7ff}.run-elapsed{margin-left:auto;color:var(--cyan);font-variant-numeric:tabular-nums}.run-message{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@keyframes runPulse{to{opacity:.35;transform:scale(.72)}}
+#run.is-running{position:relative;cursor:wait;opacity:.88}#run.is-running::after{content:'';display:inline-block;width:10px;height:10px;margin-left:8px;border:2px solid #ffffff55;border-top-color:#fff;border-radius:50%;animation:runSpin .7s linear infinite;vertical-align:-2px}@keyframes runSpin{to{transform:rotate(360deg)}}
+.overview-pipeline.is-running .mini-stage{animation:none!important;opacity:.52}.overview-pipeline.is-running .mini-stage.active{animation:stageGlow .58s ease-in-out infinite alternate!important;opacity:1;transform:translateY(-1px)}.overview-pipeline.is-running .mini-stage.active i{animation:runPulse .52s ease-in-out infinite alternate}.overview-pipeline.is-running .mini-progress span{animation:none!important;margin-left:0!important;transition:width .2s ease}@keyframes stageGlow{from{box-shadow:0 0 8px #35d7ff18;border-color:#2787a6}to{box-shadow:0 0 24px #35d7ff55;border-color:#35d7ff}}@keyframes indeterminateFlow{0%{margin-left:0}50%{margin-left:66%}100%{margin-left:0}}
+
+
+.app-footer{height:24px;display:flex;align-items:center;justify-content:center;color:#6f8094;font-size:10px;letter-spacing:.02em;border-top:1px solid #172334;background:#080d14;position:relative;z-index:5}
+@media (min-width:901px){main{height:calc(100vh - 96px)}}
+</style>
+</head>
+<body>
+<header>
+<div class="brand">
+<button class="logo biossd-logo" id="homeLogo" title="BioSSD home · return to Transaction Simulator" aria-label="Return to Transaction Simulator">
+<svg viewBox="0 0 48 48" aria-hidden="true">
+<path class="helix h1" d="M14 6 C34 11 34 19 14 24 C-1 28 5 38 34 42"/>
+<path class="helix h2" d="M34 6 C14 11 14 19 34 24 C49 28 43 38 14 42"/>
+<path class="rung" d="M17 10 L31 10"/><path class="rung" d="M12 16 L36 16"/><path class="rung" d="M15 22 L33 22"/>
+<path class="rung" d="M15 27 L33 27"/><path class="rung" d="M12 33 L36 33"/><path class="rung" d="M17 39 L31 39"/>
+<circle class="pulse-dot pulse-travel" r="2.3"><animateMotion dur="2.2s" repeatCount="indefinite" path="M14 6 C34 11 34 19 14 24 C-1 28 5 38 34 42"/></circle>
+</svg>
+</button>
+<div>
+<h1>Universal Molecular Digital Interface (UMDI) Research Simulator</h1>
+<div class="sub">
+        Interactive BioSSD/UMDI simulator for evaluating SSD-class molecular storage performance
+      </div>
+</div>
+</div>
+<div class="header-actions"><div class="mode-switch"><button class="mode-btn" id="modeQuick">Quick Mode</button><button class="mode-btn active" id="modeResearch">Research Mode</button></div><button class="header-help" id="helpButton">? Help</button><div class="pill" id="modeToggle" style="display:none" title="Switch between Research Mode and Quick Mode">
+    RESEARCH MODE
+  </div></div></header>
+<main>
+<section class="panel" id="simulationConfigPanel">
+<h2>Simulation Configuration</h2>
+<div class="controls"><div class="compact-note mode-note" id="modeNote">
+      Research Mode exposes the full architectural parameter set,
+      telemetry and channel-scaling controls.
+    </div><details class="config-group" open=""><summary>Core Configuration</summary><div class="config-group-body"><div class="row">
+<label title="Number of effective molecular channels available concurrently.">
+        Molecular channels
+        <span class="value" id="chv">8</span>
+</label>
+<input id="channels" min="1" step="1" title="Number of effective molecular channels available concurrently." type="number" value="8"/>
+</div><div class="row">
+<label title="Request scheduling policy used by the UMDI controller model.">Scheduler</label>
+<select id="scheduler" title="Request scheduling policy used by the UMDI controller model.">
+<option value="molecular_aware">
+          Molecular-aware
+        </option>
+<option value="fifo">
+          FIFO
+        </option>
+</select>
+</div><div class="row research-only">
+<label title="Percentage of generated transactions that are READ requests.">
+          Read ratio
+          <span class="value" id="rrv">70%</span>
+</label>
+<input id="readRatio" max="100" min="0" step="1" title="Percentage of generated transactions that are READ requests." type="number" value="70"/>
+</div><div class="row research-only">
+<label title="Logical address space used by the mixed workload.">
+          Logical blocks
+          <span class="value" id="bv">100</span>
+</label>
+<input id="blocks" min="1" step="1" title="Logical address space used by the mixed workload." type="number" value="100"/>
+</div></div></details><details class="config-group" open=""><summary>Transfer &amp; Path Model</summary><div class="config-group-body"><div class="group-help">Defines transfer geometry and READ/WRITE pathway acceleration for workload runs.</div><div class="row">
+<label title="Total data payload represented by the workload. Payload divided by logical-block size determines the generated transaction count.">Payload size</label>
+<input id="workloadPayloadGiB" min="0.001" step="0.001" type="number" value="1"/>
+</div><div class="row">
+<label title="Size of each host-visible logical block in the workload.">Logical block size (KiB)</label>
+<input id="workloadBlockKB" min="1" step="1" type="number" value="256"/>
+</div><div class="row">
+<label title="Acceleration applied to READ-path stages relative to the base architecture.">READ-path acceleration (×)</label>
+<input id="workloadReadSpeed" min="0.1" step="0.1" type="number" value="1"/>
+</div><div class="row">
+<label title="Acceleration applied to WRITE-path stages relative to the base architecture.">WRITE-path acceleration (×)</label>
+<input id="workloadWriteSpeed" min="0.1" step="0.1" type="number" value="1"/>
+</div><div class="row">
+<label title="Derived automatically from payload size divided by logical-block size.">Derived transactions</label>
+<input id="transactions" min="1" step="1" type="number" value="4096" readonly/>
+</div></div></details><details class="config-group"><summary>Reproducibility</summary><div class="config-group-body"><div class="row">
+<label title="Random seed. Reuse the same seed to reproduce stochastic runs.">Random seed</label>
+<input id="seed" title="Random seed. Reuse the same seed to reproduce stochastic runs." type="number" value="20260812"/>
+</div></div></details><details class="config-group"><summary>Cache &amp; Prefetch</summary><div class="config-group-body"><div class="group-help">Electronic staging and sequential prefetch controls.</div><div class="row">
+<label title="Electronic cache capacity used for repeated-access acceleration.">
+        Cache size
+        <span class="value" id="cv">32</span>
+</label>
+<input id="cache" min="0" step="1" title="Electronic cache capacity used for repeated-access acceleration." type="number" value="32"/>
+</div><div class="row">
+<div class="checkbox-row">
+<span>Enable sequential prefetch</span>
+<input id="prefetchEnabled" title="Enable sequential prefetch for predictable access patterns." type="checkbox"/>
+</div>
+</div><div class="row">
+<label>Prefetch depth</label>
+<input id="prefetchDepth" min="0" step="1" type="number" value="1"/>
+</div></div></details><details class="config-group"><summary>Error &amp; Recovery</summary><div class="config-group-body"><div class="group-help">Configure injected molecular transaction error probability.</div><div class="row">
+<label title="Probability of an injected molecular transaction error.">
+        Error probability
+        <span class="value" id="ev">3%</span>
+</label>
+<input id="error" max="100" min="0" step="0.1" title="Probability of an injected molecular transaction error." type="number" value="3"/>
+</div></div></details><details class="config-group research-only"><summary>Endurance Model</summary><div class="config-group-body"><div class="group-help">Optional rewrite-degradation model for repeated molecular writes.</div><div class="row">
+<div class="checkbox-row">
+<span>Enable endurance degradation</span>
+<input checked="" id="enduranceEnabled" title="Enable the optional repeated-write degradation model." type="checkbox"/>
+</div>
+</div><div class="row">
+<label>Maximum rewrites</label>
+<input id="maxRewrites" min="1" step="100" type="number" value="1000"/>
+</div><div class="row">
+<label>Degradation starts</label>
+<input id="degradationStart" min="0" step="10" type="number" value="100"/>
+</div><div class="row">
+<label>Failure probability at limit</label>
+<input id="failureAtLimit" max="1" min="0" step="0.01" type="number" value="0.50"/>
+</div><div class="row">
+<label>Degradation exponent</label>
+<input id="degradationExponent" min="0.1" step="0.1" type="number" value="2.0"/>
+</div></div></details><div class="mini-label">Presets</div><div class="btns preset-group">
+<button id="preset1">
+        Balanced
+      </button>
+<button id="preset2">
+        Stress Test
+      </button>
+<button id="presetCustom" type="button">
+        ✓ Custom
+      </button>
+</div><button class="primary" id="run">▶ Run Simulation</button><button id="stopRun" class="danger" style="display:none" title="Stop the current simulation cleanly">■ Stop</button><div class="config-summary" id="configSummary"><b>Configuration</b><span id="configSummaryText">Ready</span></div></div>
+
+</section>
+<section class="workspace-shell"><div class="simulator-mode-nav"><div class="simulator-mode-top"><span class="simulator-mode-label">Simulation mode</span><div class="simulator-mode-buttons"><button class="simulator-mode-button active" data-simulator="workload" title="Run mixed READ/WRITE workloads through the BioSSD transaction model.">Transaction Simulator</button><button class="simulator-mode-button" data-simulator="benchmark" title="Run the standardized large-payload BioSSD benchmark.">Benchmark Simulator</button></div></div></div><nav class="workspace-tabs analysis-tabs" id="workspaceTabs"><button class="workspace-tab active" data-tab="overview">Overview</button><button class="workspace-tab research-only" data-tab="readwrite">READ / WRITE</button><button class="workspace-tab research-only" data-tab="targets">Targets</button><button class="workspace-tab research-only" data-tab="techgap">Tech Gap</button><button class="workspace-tab research-only" data-tab="pipeline">Pipeline</button><button class="workspace-tab research-only" data-tab="scaling">Scaling</button></nav><div class="workspace-panes"><div class="workspace-pane active" data-pane="overview" id="pane-overview"><div class="workload-intro" id="simulatorContextIntro"><b>Transaction Simulator</b> models how BioSSD behaves under mixed READ/WRITE activity, including queueing, caching, scheduling, errors and molecular-channel use, while evaluating system behavior against SSD-class operational targets.</div><div class="experiment-actions analysis-refresh"><button id="refreshOverview">↻ Refresh Analysis</button><span class="status" id="overviewAnalysisStatus">Awaiting active simulator run.</span></div><div class="dashboard">
+<div class="metric">
+<div class="k">AVG LATENCY</div>
+<div class="v cyan" id="lat">--</div>
+</div>
+<div class="metric">
+<div class="k">THROUGHPUT</div>
+<div class="v green" id="thr">--</div>
+</div>
+<div class="metric">
+<div class="k">CACHE HIT RATE</div>
+<div class="v" id="hit">--</div>
+</div>
+<div class="metric">
+<div class="k">ERROR RECOVERY</div>
+<div class="v green" id="rec">--</div>
+</div>
+<div class="metric">
+<div class="k">ACTIVE CHANNELS</div>
+<div class="v amber" id="active">--</div>
+</div>
+</div><div class="details">
+<div class="metric">
+<div class="k">REQUESTS</div>
+<div class="v" id="requests">--</div>
+</div>
+<div class="metric">
+<div class="k">COMPLETED</div>
+<div class="v green" id="completed">--</div>
+</div>
+<div class="metric">
+<div class="k">FAILED</div>
+<div class="v red" id="failed">--</div>
+</div>
+<div class="metric">
+<div class="k">P95 LATENCY</div>
+<div class="v cyan" id="p95">--</div>
+</div>
+<div class="metric">
+<div class="k">TRANSACTION SUCCESS</div>
+<div class="v green" id="successRate">--</div>
+</div>
+<div class="metric">
+<div class="k">MOLECULAR READS</div>
+<div class="v" id="molecularReads">--</div>
+</div>
+<div class="metric">
+<div class="k">MOLECULAR WRITES</div>
+<div class="v" id="molecularWrites">--</div>
+</div>
+<div class="metric">
+<div class="k">ERRORS INJECTED</div>
+<div class="v" id="errorsInjected">--</div>
+</div>
+<div class="metric">
+<div class="k">ERRORS RECOVERED</div>
+<div class="v green" id="errorsRecovered">--</div>
+</div>
+<div class="metric">
+<div class="k">SIMULATION TIME</div>
+<div class="v" id="simulationTime">--</div>
+</div>
+<div class="metric advanced-metric">
+<div class="k">MEAN CHANNEL UTILIZATION</div>
+<div class="v cyan" id="meanUtil">--</div>
+</div>
+<div class="metric advanced-metric">
+<div class="k">PEAK QUEUE DEPTH</div>
+<div class="v amber" id="peakQueue">--</div>
+</div>
+<div class="metric advanced-metric">
+<div class="k">PREFETCH ATTEMPTS</div>
+<div class="v" id="prefetchAttempts">--</div>
+</div>
+<div class="metric advanced-metric">
+<div class="k">PREFETCH COMPLETED</div>
+<div class="v green" id="prefetchCompleted">--</div>
+</div>
+<div class="metric advanced-metric">
+<div class="k">PREFETCH TIME</div>
+<div class="v" id="prefetchTime">--</div>
+</div>
+<div class="metric advanced-metric">
+<div class="k">ENDURANCE FAILURES</div>
+<div class="v red" id="enduranceFailures">--</div>
+</div>
+<div class="metric advanced-metric">
+<div class="k">MAX REWRITE CYCLES</div>
+<div class="v" id="maxRewriteCycles">--</div>
+</div>
+</div><div class="run-activity hidden" id="runActivity"><span class="run-dot"></span><strong id="runActivityLabel">Simulation running</strong><span class="run-message" id="runActivityMessage">Submitting workload to the BioSSD engine…</span><span class="run-elapsed" id="runElapsed">00:00.0</span></div><div class="overview-pipeline" id="overviewPipeline">
+<div class="overview-pipeline-head"><div><b>Live UMDI Transaction Pipeline</b><span>Compact view · open Pipeline for full stage analysis</span></div><span class="overview-pipeline-state" id="overviewPipelineState">Ready</span></div>
+<div class="mini-flow" id="miniFlow">
+<div class="mini-stage" data-mini="0"><i></i><span>Host</span></div><b>›</b><div class="mini-stage" data-mini="1"><i></i><span>Queue</span></div><b>›</b><div class="mini-stage" data-mini="2"><i></i><span>Address</span></div><b>›</b><div class="mini-stage" data-mini="3"><i></i><span>Molecular I/O</span></div><b>›</b><div class="mini-stage" data-mini="4"><i></i><span>Decode / ECC</span></div><b>›</b><div class="mini-stage" data-mini="5"><i></i><span>Host Data</span></div>
+</div><div class="mini-progress"><span id="miniProgress"></span></div></div>
+<div class="overview-hint">Configure → Run → Explore. Use the tabs above when you need deeper analysis.</div></div><div class="workspace-pane" data-pane="readwrite" id="pane-readwrite"><div class="panel">
+<h2>Host-Visible Molecular Read / Write Performance</h2>
+<div class="experiment-actions">
+<button id="runCoreLatency">▶ Run Core Latency Analysis</button><button id="refreshCoreLatency">↻ Refresh Analysis</button>
+<span class="status" id="coreLatencyStatus">
+          Measures cold molecular READ, hot cached READ, verified WRITE and WRITE→cold-READ round trip.
+        </span>
+</div>
+<div class="exp-grid">
+<div class="exp-card">
+<div class="k">Cold Molecular Read</div>
+<div class="v cyan" id="coldReadLatency">--</div>
+<div class="hint">First retrieval from the molecular medium.</div>
+</div>
+<div class="exp-card">
+<div class="k">Hot Cached Read</div>
+<div class="v green" id="hotReadLatency">--</div>
+<div class="hint">Second retrieval served from electronic cache.</div>
+</div>
+<div class="exp-card">
+<div class="k">Molecular Write</div>
+<div class="v amber" id="writeLatency">--</div>
+<div class="hint">Host request through verified molecular write completion.</div>
+</div>
+<div class="exp-card">
+<div class="k">Write → Cold Read</div>
+<div class="v cyan" id="roundtripLatency">--</div>
+<div class="hint">Write followed by forced molecular retrieval.</div>
+</div>
+<div class="exp-card">
+<div class="k">Cold / Hot Acceleration</div>
+<div class="v green" id="coldHotRatio">--</div>
+<div class="hint">Electronic-cache acceleration over molecular retrieval.</div>
+</div>
+</div>
+<div class="stage-section">
+<h3>Cold READ Stage Breakdown</h3>
+<div class="stage-grid" id="coldReadStages">
+<div class="stage-chip"><div class="name">Awaiting experiment</div><div class="time">--</div></div>
+</div>
+</div>
+<div class="stage-section">
+<h3>WRITE Stage Breakdown</h3>
+<div class="stage-grid" id="writeStages">
+<div class="stage-chip"><div class="name">Awaiting experiment</div><div class="time">--</div></div>
+</div>
+</div>
+</div></div><div class="workspace-pane" data-pane="targets" id="pane-targets"><div class="panel">
+<h2>SSD-Class Reference Targets · Target-Latency and Bottleneck Analysis</h2>
+<div class="experiment-actions">
+<button id="loadTargetLatency">↻ Run Target Analysis</button><button id="refreshTargetLatency">↻ Refresh Analysis</button>
+<span class="status" id="targetLatencyStatus">
+          Tests the modeled architecture against 10 s → 100 ms host-visible latency budgets.
+        </span>
+</div>
+<div class="target-table-wrap">
+<table class="target-table">
+<thead>
+<tr>
+<th>Target</th>
+<th>Cold Read</th>
+<th>Write</th>
+<th>Round Trip</th>
+<th>Cold Physical Budget</th>
+<th>Write Physical Budget</th>
+<th>Round-Trip Physical Budget</th>
+</tr>
+</thead>
+<tbody id="targetLatencyBody">
+<tr>
+<td colspan="7" style="text-align:center;color:var(--muted)">
+                Run the target analysis to populate the engineering budget.
+              </td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="notice">
+        Engineering latency budgets calculated under the selected BioSSD model assumptions.
+      </div>
+</div></div><div class="workspace-pane" data-pane="techgap" id="pane-techgap"><div class="panel research-only" style="margin-top:14px">
+<h2>Technology-Gap Analysis</h2>
+<div class="experiment-actions">
+<select id="technologyProfile" style="width:auto;min-width:260px">
+<option value="contemporary">
+          Contemporary Demonstrated-Technology Reference
+        </option>
+<option value="custom">
+          Custom Researcher Measurements
+        </option>
+</select>
+<button id="runTechnologyGap">▶ Run Technology-Gap Analysis</button><button id="refreshTechnologyGap">↻ Refresh Analysis</button>
+<span class="status" id="technologyGapStatus">
+        Compare demonstrated or measured physical technology against the UMDI target baseline.
+      </span>
+</div>
+<div class="tech-gap-controls hidden" id="customTechnologyInputs">
+<div class="row">
+<label>Molecular access (ms)</label>
+<input id="tgMolecularAccess" min="0" step="0.001" type="number" value="1000"/>
+</div>
+<div class="row">
+<label>Sensing (ms)</label>
+<input id="tgSensing" min="0" step="0.001" type="number" value="1000"/>
+</div>
+<div class="row">
+<label>Basecalling (ms)</label>
+<input id="tgBasecalling" min="0" step="0.001" type="number" value="1000"/>
+</div>
+<div class="row">
+<label>Molecular write (ms)</label>
+<input id="tgMolecularWrite" min="0" step="0.001" type="number" value="1000"/>
+</div>
+<div class="row">
+<label>Write verification (ms)</label>
+<input id="tgWriteVerification" min="0" step="0.001" type="number" value="1000"/>
+</div>
+</div>
+<div class="tech-gap-results">
+<div class="exp-card">
+<div class="k">Cold READ Gap</div>
+<div class="v cyan" id="tgColdRead">--</div>
+<div class="hint" id="tgColdReadHint">--</div>
+</div>
+<div class="exp-card">
+<div class="k">WRITE Gap</div>
+<div class="v amber" id="tgWrite">--</div>
+<div class="hint" id="tgWriteHint">--</div>
+</div>
+<div class="exp-card">
+<div class="k">WRITE → READ Gap</div>
+<div class="v cyan" id="tgRoundtrip">--</div>
+<div class="hint" id="tgRoundtripHint">--</div>
+</div>
+</div>
+<div class="optimization-head">
+<span style="color:#cbd7e7;font-size:11px;text-transform:uppercase;letter-spacing:.07em">
+        Hardware Optimization Targets
+      </span>
+<span class="bottleneck" id="dominantBottleneck">
+        Custom measurements required for stage-level ranking.
+      </span>
+</div>
+<div class="optimization-wrap">
+<table class="optimization-table">
+<thead>
+<tr>
+<th>Priority</th>
+<th>Hardware Stage</th>
+<th>Current</th>
+<th>UMDI Target</th>
+<th>Slowdown</th>
+<th>Reduction Required</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="optimizationBody">
+<tr>
+<td colspan="7" style="text-align:center;color:var(--muted)">
+              Select Custom Researcher Measurements and run the analysis.
+            </td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="notice" id="technologyGapNote">
+      Documented comparison profile assembled from experimentally demonstrated molecular-storage timings.
+    </div>
+</div></div><div class="workspace-pane" data-pane="pipeline" id="pane-pipeline"><div class="panel diagram">
+<h2>UMDI Transaction Pipeline <span class="pipeline-arch-note" title="Runtime transaction stages mapped to the official eight-layer UMDI architecture. The pipeline is an execution view, not a second layer architecture.">ⓘ</span></h2><div class="experiment-actions analysis-refresh"><button id="refreshPipeline">↻ Refresh Analysis</button><span class="status" id="pipelineAnalysisStatus">Awaiting active simulator run.</span></div>
+<div class="pipeline-live-head">
+<div class="pipeline-status-row">
+<span class="pipeline-state" id="pipelineState">IDLE · awaiting transaction</span>
+<span class="pipeline-eta" id="pipelineEta">ETA --</span>
+</div>
+<div class="pipeline-progress">
+<div class="pipeline-progress-fill" id="pipelineProgressFill"></div>
+</div>
+<div class="pipeline-block" id="pipelineBlock">
+          No transaction playback yet.
+        </div>
+</div>
+<div class="pipeline" id="transactionPipeline">
+<div class="stage pending" data-pipeline-stage="host_request">
+<span class="dot"></span>
+<b>Host Request</b><span class="layer-tag" title="Architectural mapping: Host-interface layer.">UMDI Layer 1</span>
+<span class="sub" id="hostOperation">READ / WRITE</span>
+<span class="stage-live-time">--</span>
+</div>
+<div class="arrow">↓</div>
+<div class="stage pending" data-pipeline-stage="command_queue">
+<span class="dot"></span>
+<b>UMDI Command Queue</b><span class="layer-tag" title="Architectural mapping: UMDI controller layer.">UMDI Layer 2</span>
+<span class="sub">ordering + scheduling</span>
+<span class="stage-live-time">--</span>
+</div>
+<div class="arrow">↓</div>
+<div class="stage pending" data-pipeline-stage="addressing">
+<span class="dot"></span>
+<b>Molecular Addressing</b><span class="layer-tag" title="Address translation is primarily a controller function operating with the molecular-storage layer.">Layers 2–3</span>
+<span class="sub">logical → molecular</span>
+<span class="stage-live-time">--</span>
+</div>
+<div class="arrow">↓</div>
+<div class="stage pending" data-pipeline-stage="molecular_access">
+<span class="dot"></span>
+<b>Molecular Access</b><span class="layer-tag" title="Architectural mapping: molecular-storage layer.">UMDI Layer 3</span>
+<span class="sub">physical molecular retrieval</span>
+<span class="stage-live-time">--</span>
+</div>
+<div class="arrow">↓</div>
+<div class="stage pending" data-pipeline-stage="sensing">
+<span class="dot"></span>
+<b>Molecular Sensing</b><span class="layer-tag" title="Architectural mapping: molecular-sensing layer.">UMDI Layer 4</span>
+<span class="sub">signal acquisition</span>
+<span class="stage-live-time">--</span>
+</div>
+<div class="arrow">↓</div>
+<div class="stage pending" data-pipeline-stage="basecalling">
+<span class="dot"></span>
+<b>Basecalling</b><span class="layer-tag" title="Architectural mapping: signal-processing and basecalling layer.">UMDI Layer 5</span>
+<span class="sub">signal → sequence</span>
+<span class="stage-live-time">--</span>
+</div>
+<div class="arrow">↓</div>
+<div class="stage pending" data-pipeline-stage="decoding">
+<span class="dot"></span>
+<b>Storage Decoding</b><span class="layer-tag" title="Architectural mapping: storage-decoding layer.">UMDI Layer 6</span>
+<span class="sub">sequence → host data</span>
+<span class="stage-live-time">--</span>
+</div>
+<div class="arrow">↓</div>
+<div class="stage pending" data-pipeline-stage="error_correction">
+<span class="dot"></span>
+<b>Error Correction</b><span class="layer-tag" title="Architectural mapping: error-correction and reconstruction layer.">UMDI Layer 7</span>
+<span class="sub">reconstruction + verification</span>
+<span class="stage-live-time">--</span>
+</div>
+<div class="arrow">↓</div>
+<div class="stage pending" data-pipeline-stage="encoding">
+<span class="dot"></span>
+<b>Encoding</b><span class="layer-tag functional" title="WRITE-path transformation represented as a transaction function rather than a separate UMDI architectural layer.">WRITE path</span>
+<span class="sub">host data → molecular representation</span>
+<span class="stage-live-time">--</span>
+</div>
+<div class="arrow">↓</div>
+<div class="stage pending" data-pipeline-stage="molecular_write">
+<span class="dot"></span>
+<b>Molecular Write</b><span class="layer-tag" title="WRITE operation against the molecular-storage layer.">UMDI Layer 3</span>
+<span class="sub">physical molecular storage</span>
+<span class="stage-live-time">--</span>
+</div>
+<div class="arrow">↓</div>
+<div class="stage pending" data-pipeline-stage="write_verification">
+<span class="dot"></span>
+<b>Write Verification</b><span class="layer-tag" title="Verification spans controller coordination and reconstruction/integrity functions.">Layers 2 & 7</span>
+<span class="sub">confirm persisted molecular data</span>
+<span class="stage-live-time">--</span>
+</div>
+<div class="arrow">↓</div>
+<div class="stage pending" data-pipeline-stage="buffer">
+<span class="dot"></span>
+<b>Host Buffer</b><span class="layer-tag" title="Electronic buffering/cache hands the completed transaction back toward the host interface.">Layer 8 → 1</span>
+<span class="sub">transaction completion → host</span>
+<span class="stage-live-time">--</span>
+</div>
+</div>
+<div class="channel-summary" id="channelSummary">
+        No active channel telemetry yet.
+      </div>
+<div class="channels" id="channelsView"></div>
+</div></div><div class="workspace-pane" data-pane="scaling" id="pane-scaling"><div class="panel chart" id="scalingPanel"><div class="experiment-actions analysis-refresh"><button id="runScalingAnalysis">▶ Run Scaling Analysis</button><button id="refreshScaling">↻ Refresh Analysis</button><span class="status" id="scalingAnalysisStatus">Awaiting active simulator run.</span></div>
+<div class="scaling-inline-controls"><div class="row">
+<label title="Comma-separated channel counts for the scaling experiment.">Channel sweep</label>
+<input id="scalingChannels" title="Comma-separated channel counts for the scaling experiment." type="text" value="1,2,4,8,16,32,64,120"/>
+</div></div><h2>Channel Scaling Preview</h2>
+<div class="chart-controls">
+<span>
+          Measured throughput by molecular channel count
+        </span>
+<span class="scaling-status" id="scalingStatus">
+          Ready
+        </span>
+</div>
+<div class="bars" id="bars"></div>
+<div class="scaling-note" id="scalingNote">
+        Scaling preview uses the same Python simulation engine.
+        Channel values are researcher-configurable.
+      </div>
+<div class="log" id="log"></div>
+</div></div><div class="workspace-pane" data-pane="benchmark" id="pane-benchmark"><div class="panel benchmark-panel">
+<h2>Research Benchmark <span class="bench-subtitle">SSD-Class Optimized Configuration</span></h2>
+<div class="benchmark-intro">Reproduce the optimized 1 GiB configuration reported in the BioSSD research, then change the parameters and compare your own modeled configuration with the reference.</div>
+<div class="benchmark-layout">
+<div class="benchmark-box">
+<h3>Reference configuration</h3>
+<div class="benchmark-grid">
+<label><span>Payload</span><input id="benchPayload" min="0.001" step="0.001" type="number" value="1"/><span>GiB</span><span class="bench-edit" title="Editable benchmark parameter">✎</span></label>
+<label><span>Molecular channels</span><input id="benchChannels" min="1" step="1" type="number" value="4096"/><span></span><span class="bench-edit" title="Editable benchmark parameter">✎</span></label>
+<label><span>Logical block size</span><input id="benchBlockKB" min="1" step="1" type="number" value="256"/><span>KiB</span><span class="bench-edit" title="Editable benchmark parameter">✎</span></label>
+<label><span>READ-path acceleration</span><input id="benchReadSpeed" min="0.1" step="0.1" type="number" value="4"/><span>×</span><span class="bench-edit" title="Editable benchmark parameter">✎</span></label>
+<label><span>WRITE-path acceleration</span><input id="benchWriteSpeed" min="0.1" step="0.1" type="number" value="8"/><span>×</span><span class="bench-edit" title="Editable benchmark parameter">✎</span></label>
+</div>
+<div class="benchmark-actions">
+<button class="primary" id="reproduceBenchmark">▶ Reproduce Benchmark</button>
+<button id="runCustomBenchmark">▶ Test My Configuration</button>
+<button id="resetBenchmark">Reset Reference</button>
+</div>
+</div>
+<div class="benchmark-box">
+<h3>Published simulation result</h3>
+<div class="benchmark-result-grid">
+<div><span>READ latency</span><strong id="refRead">1.235 s</strong></div>
+<div><span>WRITE latency</span><strong id="refWrite">1.201 s</strong></div>
+<div><span>Round trip</span><strong id="refRoundtrip">2.436 s</strong></div>
+<div><span>READ throughput</span><strong id="refReadThr">869 MB/s</strong></div>
+<div><span>WRITE throughput</span><strong id="refWriteThr">894 MB/s</strong></div>
+</div>
+</div>
+</div>
+<div class="benchmark-comparison hidden" id="benchmarkComparison"></div>
+<div class="benchmark-note">Benchmark runs are stochastic. The published result is the fixed monograph reference; current runs may vary slightly under the same configuration.</div>
+
+</div></div></div></section>
+</main>
+<footer class="app-footer">© <span id="copyrightYear"></span>&nbsp; Abraham Ikongshul Ashindortiang · BioSSD / UMDI · aashigodsluv@gmail.com</footer>
+<script>
+
+document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+
+const $ =
+  id =>
+    document.getElementById(id);
+
+
+const API =
+  'http://127.0.0.1:8766';
+
+
+let scalingRunning = false;
+let currentMode = 'research';
+
+let activePreset = null;
+
+
+function setPresetState(name){
+  activePreset = name;
+
+  const balanced = $('preset1');
+  const stress = $('preset2');
+  const custom = $('presetCustom');
+
+  [
+    balanced,
+    stress,
+    custom
+  ].forEach(button => {
+    button.classList.remove('preset-active');
+  });
+
+  balanced.textContent = 'Balanced';
+  stress.textContent = 'Stress Test';
+  custom.textContent = 'Custom';
+
+  if(name === 'balanced'){
+    balanced.classList.add('preset-active');
+    balanced.textContent = '✓ Balanced';
+    return;
+  }
+
+  if(name === 'stress'){
+    stress.classList.add('preset-active');
+    stress.textContent = '✓ Stress Test';
+    return;
+  }
+
+  custom.classList.add('preset-active');
+  custom.textContent = '✓ Custom';
+}
+
+function markCustomConfiguration(){
+  setPresetState('custom');
+}
+
+
+function log(message){
+
+  const e =
+    $('log');
+
+  e.innerHTML +=
+    `<div>${new Date().toLocaleTimeString()} ${message}</div>`;
+
+  e.scrollTop =
+    e.scrollHeight;
+
+}
+
+
+function setMode(mode){
+
+  currentMode =
+    mode === 'quick'
+      ? 'quick'
+      : 'research';
+
+
+  const research =
+    currentMode === 'research';
+
+
+  $('modeToggle').textContent =
+    research
+      ? 'RESEARCH MODE'
+      : 'QUICK MODE';
+
+
+  $('modeToggle').classList.toggle(
+    'quick',
+    !research
+  );
+
+
+  $('modeNote').textContent =
+    research
+      ? 'Research Mode exposes the full architectural parameter set, telemetry and channel-scaling controls.'
+      : 'Quick Mode keeps the core simulator controls visible and hides advanced research configuration and telemetry.';
+
+
+  document
+    .querySelectorAll('.research-only')
+    .forEach(
+      element => {
+
+        element.classList.toggle(
+          'hidden',
+          !research
+        );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll('.advanced-metric')
+    .forEach(
+      element => {
+
+        element.classList.toggle(
+          'hidden',
+          !research
+        );
+
+      }
+    );
+
+
+  $('scalingPanel').classList.toggle(
+    'hidden',
+    !research
+  );
+
+
+  localStorage.setItem(
+    'umdi_ui_mode',
+    currentMode
+  );
+
+}
+
+
+$('modeToggle')
+  .addEventListener(
+    'click',
+    () => {
+
+      setMode(
+        currentMode === 'research'
+          ? 'quick'
+          : 'research'
+      );
+
+    }
+  );
+
+
+function sync(){
+
+  $('chv').textContent =
+    $('channels').value;
+
+
+  $('cv').textContent =
+    $('cache').value;
+
+
+  $('ev').textContent =
+    $('error').value +
+    '%';
+
+
+  const payloadBytes =
+    Math.max(1, Number($('workloadPayloadGiB').value) || 1) * 1024 * 1024 * 1024;
+  const blockBytes =
+    Math.max(1, Number($('workloadBlockKB').value) || 1) * 1024;
+  $('transactions').value =
+    Math.max(1, Math.ceil(payloadBytes / blockBytes));
+
+
+  $('rrv').textContent =
+    `${Number($('readRatio').value).toFixed(0)}%`;
+
+
+  $('bv').textContent =
+    Number(
+      $('blocks').value
+    ).toLocaleString();
+
+
+  $('prefetchDepth').disabled =
+    !$('prefetchEnabled').checked;
+
+
+  drawChannels();
+
+}
+
+
+function drawChannels(
+  active = 0,
+  utilization = null
+){
+
+  const total =
+    Math.max(
+      1,
+      Number(
+        $('channels').value
+      ) || 1
+    );
+
+
+  const view =
+    $('channelsView');
+
+
+  view.innerHTML =
+    '';
+
+
+  for(
+    let i = 1;
+    i <= total;
+    i++
+  ){
+
+    const box =
+      document.createElement(
+        'div'
+      );
+
+
+    box.className =
+      'ch ' +
+      (
+        i <= active
+          ? 'active'
+          : ''
+      );
+
+
+    box.textContent =
+      'CH-' +
+      i;
+
+
+    if(
+      utilization &&
+      utilization[i - 1] !== undefined
+    ){
+
+      box.title =
+        `Channel ${i}: ${(utilization[i - 1] * 100).toFixed(1)}% utilization`;
+
+    }
+
+
+    view.appendChild(
+      box
+    );
+
+  }
+
+
+  $('channelSummary').textContent =
+    active > 0
+      ? `${active} of ${total} configured channels processed requests.`
+      : `${total} molecular channels configured.`;
+
+}
+
+
+function resetMetrics(){
+
+  [
+    'lat',
+    'thr',
+    'hit',
+    'rec',
+    'active',
+    'requests',
+    'completed',
+    'failed',
+    'p95',
+    'successRate',
+    'molecularReads',
+    'molecularWrites',
+    'errorsInjected',
+    'errorsRecovered',
+    'simulationTime',
+    'meanUtil',
+    'peakQueue',
+    'prefetchAttempts',
+    'prefetchCompleted',
+    'prefetchTime',
+    'enduranceFailures',
+    'maxRewriteCycles'
+  ]
+  .forEach(
+    id => {
+
+      $(id).textContent =
+        '--';
+
+    }
+  );
+
+}
+
+
+
+
+let pipelinePlaybackToken = 0;
+let enginePipelineTimer = null;
+let enginePipelineIndex = 0;
+
+const READ_PIPELINE = [
+  'host_request',
+  'command_queue',
+  'addressing',
+  'molecular_access',
+  'sensing',
+  'basecalling',
+  'decoding',
+  'error_correction',
+  'buffer'
+];
+
+const WRITE_PIPELINE = [
+  'host_request',
+  'command_queue',
+  'addressing',
+  'encoding',
+  'molecular_write',
+  'write_verification',
+  'buffer'
+];
+
+
+function pipelineElement(stageId){
+  return document.querySelector(
+    `[data-pipeline-stage="${stageId}"]`
+  );
+}
+
+
+function resetPipeline(){
+  clearInterval(enginePipelineTimer);
+  enginePipelineTimer = null;
+
+  pipelinePlaybackToken++;
+
+  document
+    .querySelectorAll('[data-pipeline-stage]')
+    .forEach(stage => {
+      stage.classList.remove(
+        'running',
+        'done',
+        'skipped'
+      );
+      stage.classList.add('pending');
+      stage.style.setProperty('--stage-progress', '0%');
+
+      const time = stage.querySelector('.stage-live-time');
+      if(time){
+        time.textContent = '--';
+      }
+    });
+
+  $('pipelineProgressFill').style.width = '0%';
+  $('pipelineState').textContent = 'IDLE · awaiting transaction';
+  $('pipelineEta').textContent = 'ETA --';
+  $('pipelineBlock').textContent = 'No transaction playback yet.';
+}
+
+
+function setPipelineRoute(operation){
+  const route =
+    operation === 'WRITE'
+      ? WRITE_PIPELINE
+      : READ_PIPELINE;
+
+  $('hostOperation').textContent = operation;
+
+  document
+    .querySelectorAll('[data-pipeline-stage]')
+    .forEach(stage => {
+      const id = stage.dataset.pipelineStage;
+      const active = route.includes(id);
+
+      stage.classList.toggle('skipped', !active);
+      stage.classList.toggle('pending', active);
+    });
+
+  return route;
+}
+
+
+function beginWaitingPipeline(cfg){
+  resetPipeline();
+
+  const operation = 'READ';
+  const route = setPipelineRoute(operation);
+
+  $('pipelineState').textContent =
+    'ENGINE RUNNING · PROCESSING TRANSACTIONS';
+
+  $('pipelineEta').textContent =
+    'awaiting simulator telemetry';
+
+  $('pipelineBlock').textContent =
+    `${Number(cfg.transactions).toLocaleString()} requests · ${cfg.channels} molecular channels`;
+
+  enginePipelineIndex = 0;
+
+  function paintEngineStage(){
+    route.forEach((stageId, index) => {
+      const stage = pipelineElement(stageId);
+      if(!stage) return;
+      stage.classList.remove('done','skipped','pending','running');
+      stage.style.setProperty('--stage-progress', index === enginePipelineIndex ? '58%' : '0%');
+      stage.classList.add(index === enginePipelineIndex ? 'running' : 'pending');
+    });
+
+    const current = route[enginePipelineIndex] || 'host_request';
+    $('pipelineState').textContent =
+      `ENGINE RUNNING · ${current.replaceAll('_',' ').toUpperCase()}`;
+    $('pipelineProgressFill').style.width = '34%';
+    $('pipelineEta').textContent = 'processing · awaiting simulator telemetry';
+
+    animateChannelActivity(
+      Math.max(1, Math.min(Number(cfg.channels) || 1, 4)),
+      current.replaceAll('_',' ')
+    );
+  }
+
+  paintEngineStage();
+  enginePipelineTimer = setInterval(() => {
+    enginePipelineIndex = (enginePipelineIndex + 1) % route.length;
+    paintEngineStage();
+  }, 760);
+}
+
+
+function animateChannelActivity(activeCount, label){
+  const boxes = [
+    ...document.querySelectorAll('#channelsView .ch')
+  ];
+
+  boxes.forEach((box, index) => {
+    box.classList.remove('processing', 'complete');
+    if(index < activeCount){
+      box.classList.add('processing');
+      box.title = `${box.textContent}: ${label}`;
+    }
+  });
+
+  $('channelSummary').textContent =
+    `${activeCount} channel${activeCount === 1 ? '' : 's'} visualized · ${label}`;
+}
+
+
+function sleep(ms){
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+async function animateStage(stageId, durationMs, elapsedBefore, totalMs, token){
+  const stage = pipelineElement(stageId);
+  if(!stage || token !== pipelinePlaybackToken){
+    return;
+  }
+
+  stage.classList.remove('pending', 'done', 'skipped');
+  stage.classList.add('running');
+
+  const time = stage.querySelector('.stage-live-time');
+
+  // Real simulated milliseconds can be too fast to see, so playback is
+  // time-compressed/expanded into a readable visual duration.
+  const visualMs = Math.max(
+    180,
+    Math.min(1200, Number(durationMs) * 5)
+  );
+
+  const started = performance.now();
+
+  while(token === pipelinePlaybackToken){
+    const fraction = Math.min(
+      1,
+      (performance.now() - started) / visualMs
+    );
+
+    stage.style.setProperty(
+      '--stage-progress',
+      `${(fraction * 100).toFixed(1)}%`
+    );
+
+    const simulatedElapsed =
+      elapsedBefore +
+      Number(durationMs) * fraction;
+
+    const overall =
+      totalMs > 0
+        ? simulatedElapsed / totalMs
+        : 1;
+
+    $('pipelineProgressFill').style.width =
+      `${Math.min(100, overall * 100).toFixed(1)}%`;
+
+    $('pipelineEta').textContent =
+      `simulated ${Math.max(0, totalMs - simulatedElapsed).toFixed(1)} ms remaining`;
+
+    if(time){
+      time.textContent =
+        `${(Number(durationMs) * fraction).toFixed(1)} / ${Number(durationMs).toFixed(1)} ms`;
+    }
+
+    if(fraction >= 1){
+      break;
+    }
+
+    await sleep(32);
+  }
+
+  if(token !== pipelinePlaybackToken){
+    return;
+  }
+
+  stage.classList.remove('running');
+  stage.classList.add('done');
+  stage.style.setProperty('--stage-progress', '100%');
+
+  if(time){
+    time.textContent = `${Number(durationMs).toFixed(1)} ms`;
+  }
+}
+
+
+async function playTransactionTrace(trace){
+  clearInterval(enginePipelineTimer);
+  enginePipelineTimer = null;
+  if(!trace || !Array.isArray(trace.stages)){
+    resetPipeline();
+    $('pipelineState').textContent =
+      'COMPLETE · no stage trace returned';
+    return;
+  }
+
+  resetPipeline();
+  const token = pipelinePlaybackToken;
+
+  const operation =
+    trace.operation === 'WRITE'
+      ? 'WRITE'
+      : 'READ';
+
+  const route = setPipelineRoute(operation);
+
+  const stageMap = {};
+  trace.stages.forEach(stage => {
+    stageMap[stage.id] = Number(stage.duration_ms) || 0;
+  });
+
+  // Host and queue are controller events for visualization.
+  const hostDuration = 1;
+  const queueDuration = Math.max(
+    1,
+    Math.min(
+      8,
+      Number(trace.representative_stage_total_ms || 0) * 0.03
+    )
+  );
+
+  const durations = {
+    host_request:hostDuration,
+    command_queue:queueDuration,
+    ...stageMap
+  };
+
+  const totalMs = route.reduce(
+    (sum, id) => sum + (durations[id] || 0),
+    0
+  );
+
+  $('pipelineState').textContent =
+    `${operation} · representative transaction playback`;
+
+  $('pipelineBlock').textContent =
+    `${Number(trace.transactions || 1).toLocaleString()} workload requests · ${trace.active_channels || trace.configured_channels || 1} active channels · stage telemetry from current model`;
+
+  let elapsed = 0;
+
+  for(const stageId of route){
+    if(token !== pipelinePlaybackToken){
+      return;
+    }
+
+    const duration = durations[stageId] || 0;
+
+    $('pipelineState').textContent =
+      `${operation} · ${stageId.replaceAll('_',' ').toUpperCase()}`;
+
+    animateChannelActivity(
+      Math.max(
+        1,
+        Math.min(
+          Number(trace.active_channels || 1),
+          Number(trace.configured_channels || 1)
+        )
+      ),
+      stageId.replaceAll('_',' ')
+    );
+
+    await animateStage(
+      stageId,
+      duration,
+      elapsed,
+      totalMs,
+      token
+    );
+
+    elapsed += duration;
+  }
+
+  if(token !== pipelinePlaybackToken){
+    return;
+  }
+
+  $('pipelineProgressFill').style.width = '99%';
+  $('pipelineEta').textContent = 'synchronizing results';
+  $('pipelineState').textContent =
+    `${operation} · FINALIZING RESULTS`;
+
+  $('pipelineBlock').textContent =
+    `Representative stage total ${totalMs.toFixed(1)} ms · synchronizing simulation outputs`;
+}
+
+function finalizeTransactionTrace(trace){
+  const operation = trace && trace.operation === 'WRITE' ? 'WRITE' : 'READ';
+  $('pipelineProgressFill').style.width = '100%';
+  $('pipelineEta').textContent = '0.0 ms remaining';
+  $('pipelineState').textContent = `${operation} COMPLETE`;
+  $('pipelineBlock').textContent = 'Transaction trace and simulation results synchronized';
+
+  document
+    .querySelectorAll('#channelsView .ch.processing')
+    .forEach(box => {
+      box.classList.remove('processing');
+      box.classList.add('complete');
+    });
+
+  const active = trace ? (trace.active_channels || trace.configured_channels || 1) : 1;
+  $('channelSummary').textContent =
+    `${active} channel${Number(active) === 1 ? '' : 's'} completed the visualized transaction.`;
+}
+
+
+function displayResult(
+  x,
+  cfg
+){
+
+  const pick =
+    (...keys) => {
+
+      for(
+        const key of keys
+      ){
+
+        if(
+          x[key] !== undefined &&
+          x[key] !== null
+        ){
+
+          return x[key];
+
+        }
+
+      }
+
+      return null;
+
+    };
+
+
+  const requests =
+    pick('requests');
+
+
+  const completed =
+    pick('completed');
+
+
+  const failed =
+    pick('failed');
+
+
+  const latency =
+    pick(
+      'mean_latency_ms',
+      'avg_latency_ms',
+      'latency_ms'
+    );
+
+
+  const p95 =
+    pick(
+      'p95_latency_ms'
+    );
+
+
+  const throughput =
+    pick(
+      'throughput_bytes_per_s',
+      'throughput_bps',
+      'throughput'
+    );
+
+
+  const cacheHits =
+    pick(
+      'cache_hits'
+    );
+
+
+  const recovery =
+    pick(
+      'error_recovery_rate',
+      'recovery_rate',
+      'reconstruction_success_rate'
+    );
+
+
+  const molecularReads =
+    pick(
+      'molecular_reads'
+    );
+
+
+  const molecularWrites =
+    pick(
+      'molecular_writes'
+    );
+
+
+  const errorsInjected =
+    pick(
+      'errors_injected'
+    );
+
+
+  const errorsRecovered =
+    pick(
+      'errors_recovered'
+    );
+
+
+  const simulationTime =
+    pick(
+      'simulation_time_ms'
+    );
+
+
+  const success =
+    pick(
+      'transaction_success_rate'
+    );
+
+
+  const activeChannels =
+    pick(
+      'active_channel_count'
+    );
+
+
+  const utilization =
+    pick(
+      'channel_utilization'
+    );
+
+
+  const meanUtil =
+    pick(
+      'mean_channel_utilization'
+    );
+
+
+  const peakQueue =
+    pick(
+      'peak_queue_depth'
+    );
+
+
+  const prefetchAttempts =
+    pick(
+      'prefetch_attempts'
+    );
+
+
+  const prefetchCompleted =
+    pick(
+      'prefetch_completed'
+    );
+
+
+  const prefetchTime =
+    pick(
+      'prefetch_time_ms'
+    );
+
+
+  const enduranceFailures =
+    pick(
+      'endurance_failures'
+    );
+
+
+  const maxRewriteCycles =
+    pick(
+      'maximum_rewrite_cycles'
+    );
+
+
+  if(latency !== null){
+
+    $('lat').textContent =
+      Number(latency)
+        .toFixed(2) +
+      ' ms';
+
+  }
+
+
+  if(p95 !== null){
+
+    $('p95').textContent =
+      Number(p95)
+        .toFixed(2) +
+      ' ms';
+
+  }
+
+
+  if(throughput !== null){
+
+    $('thr').textContent =
+      (
+        Number(throughput)
+        / 1000000
+      ).toFixed(2) +
+      ' MB/s';
+
+  }
+
+
+  if(
+    cacheHits !== null &&
+    requests !== null
+  ){
+
+    $('hit').textContent =
+      (
+        Number(requests) > 0
+          ? (
+              Number(cacheHits)
+              / Number(requests)
+            ) * 100
+          : 0
+      ).toFixed(1) +
+      '%';
+
+  }
+
+
+  if(recovery !== null){
+
+    $('rec').textContent =
+      (
+        Number(recovery)
+        * 100
+      ).toFixed(1) +
+      '%';
+
+  }
+  else{
+
+    $('rec').textContent =
+      'N/A';
+
+  }
+
+
+  if(requests !== null){
+
+    $('requests').textContent =
+      Number(requests)
+        .toLocaleString();
+
+  }
+
+
+  if(completed !== null){
+
+    $('completed').textContent =
+      Number(completed)
+        .toLocaleString();
+
+  }
+
+
+  if(failed !== null){
+
+    $('failed').textContent =
+      Number(failed)
+        .toLocaleString();
+
+  }
+
+
+  if(success !== null){
+
+    $('successRate').textContent =
+      (
+        Number(success)
+        * 100
+      ).toFixed(1) +
+      '%';
+
+  }
+  else if(
+    requests !== null &&
+    completed !== null
+  ){
+
+    $('successRate').textContent =
+      (
+        Number(completed)
+        / Number(requests)
+        * 100
+      ).toFixed(1) +
+      '%';
+
+  }
+
+
+  if(molecularReads !== null){
+
+    $('molecularReads').textContent =
+      Number(molecularReads)
+        .toLocaleString();
+
+  }
+
+
+  if(molecularWrites !== null){
+
+    $('molecularWrites').textContent =
+      Number(molecularWrites)
+        .toLocaleString();
+
+  }
+
+
+  if(errorsInjected !== null){
+
+    $('errorsInjected').textContent =
+      Number(errorsInjected)
+        .toLocaleString();
+
+  }
+
+
+  if(errorsRecovered !== null){
+
+    $('errorsRecovered').textContent =
+      Number(errorsRecovered)
+        .toLocaleString();
+
+  }
+
+
+  if(simulationTime !== null){
+
+    $('simulationTime').textContent =
+      Number(simulationTime)
+        .toFixed(2) +
+      ' ms';
+
+  }
+
+
+  if(meanUtil !== null){
+
+    $('meanUtil').textContent =
+      (
+        Number(meanUtil)
+        * 100
+      ).toFixed(1) +
+      '%';
+
+  }
+
+
+  if(peakQueue !== null){
+
+    $('peakQueue').textContent =
+      Number(peakQueue)
+        .toLocaleString();
+
+  }
+
+
+  if(prefetchAttempts !== null){
+
+    $('prefetchAttempts').textContent =
+      Number(prefetchAttempts)
+        .toLocaleString();
+
+  }
+
+
+  if(prefetchCompleted !== null){
+
+    $('prefetchCompleted').textContent =
+      Number(prefetchCompleted)
+        .toLocaleString();
+
+  }
+
+
+  if(prefetchTime !== null){
+
+    $('prefetchTime').textContent =
+      Number(prefetchTime)
+        .toFixed(2) +
+      ' ms';
+
+  }
+
+
+  if(enduranceFailures !== null){
+
+    $('enduranceFailures').textContent =
+      Number(enduranceFailures)
+        .toLocaleString();
+
+  }
+
+
+  if(maxRewriteCycles !== null){
+
+    $('maxRewriteCycles').textContent =
+      Number(maxRewriteCycles)
+        .toLocaleString();
+
+  }
+
+
+  const actualActive =
+    activeChannels !== null
+      ? Number(
+          activeChannels
+        )
+      : Number(
+          cfg.channels
+        );
+
+
+  $('active').textContent =
+    actualActive;
+
+
+  drawChannels(
+    actualActive,
+    Array.isArray(
+      utilization
+    )
+      ? utilization
+      : null
+  );
+
+}
+
+
+async function runSimulation(
+  cfg
+){
+
+  // Keep the run identity in the JSON envelope. frontend_api.py removes
+  // _client_run_id before building the scientific simulator configuration,
+  // so lifecycle metadata never reaches biossd_sim.py. This deliberately
+  // avoids a custom HTTP header and its CORS preflight path.
+  const response =
+    await fetch(
+      API + '/simulate',
+      {
+        method:'POST',
+
+        headers:{
+          'Content-Type':
+            'application/json'
+        },
+
+        body:
+          JSON.stringify(cfg)
+      }
+    );
+
+
+  const result =
+    await response.json();
+
+
+  if(
+    !result.ok
+  ){
+
+    const err=new Error(result.error || 'Simulation failed');
+    err.cancelled=!!result.cancelled;
+    throw err;
+
+  }
+
+
+  return {
+    result:
+      result.result ||
+      {},
+    transaction_trace:
+      result.transaction_trace ||
+      null,
+    run_id:
+      result.run_id ||
+      null
+  };
+
+}
+
+
+function buildConfig(){
+
+  return {
+
+    channels:
+      Math.max(
+        1,
+        Number(
+          $('channels').value
+        )
+      ),
+
+    scheduler:
+      $('scheduler').value,
+
+    cache_size:
+      Math.max(
+        0,
+        Number(
+          $('cache').value
+        )
+      ),
+
+    error_probability:
+      Math.max(
+        0,
+        Number(
+          $('error').value
+        ) / 100
+      ),
+
+    transactions:
+      Math.max(
+        1,
+        Number(
+          $('transactions').value
+        )
+      ),
+
+    payload_size_bytes:
+      Math.max(1, Number($('workloadPayloadGiB').value) * 1024 * 1024 * 1024),
+
+    logical_block_size_bytes:
+      Math.max(1, Number($('workloadBlockKB').value) * 1024),
+
+    read_path_speedup:
+      Math.max(0.1, Number($('workloadReadSpeed').value)),
+
+    write_path_speedup:
+      Math.max(0.1, Number($('workloadWriteSpeed').value)),
+
+    read_ratio:
+      Math.min(
+        1,
+        Math.max(
+          0,
+          Number(
+            $('readRatio').value
+          ) / 100
+        )
+      ),
+
+    blocks:
+      Math.max(
+        1,
+        Number(
+          $('blocks').value
+        )
+      ),
+
+    seed:
+      Number(
+        $('seed').value
+      ),
+
+    prefetch:{
+      enabled:
+        $('prefetchEnabled').checked,
+
+      depth:
+        Math.max(
+          0,
+          Number(
+            $('prefetchDepth').value
+          )
+        )
+    },
+
+    endurance:{
+      enabled:
+        $('enduranceEnabled').checked,
+
+      max_rewrites:
+        Math.max(
+          1,
+          Number(
+            $('maxRewrites').value
+          )
+        ),
+
+      degradation_start:
+        Math.max(
+          0,
+          Number(
+            $('degradationStart').value
+          )
+        ),
+
+      failure_probability_at_limit:
+        Math.min(
+          1,
+          Math.max(
+            0,
+            Number(
+              $('failureAtLimit').value
+            )
+          )
+        ),
+
+      degradation_exponent:
+        Math.max(
+          0.1,
+          Number(
+            $('degradationExponent').value
+          )
+        )
+    }
+
+  };
+
+}
+
+
+$('preset1').onclick =
+  () => {
+
+    $('channels').value =
+      8;
+
+    $('cache').value =
+      32;
+
+    $('error').value =
+      3;
+
+    $('workloadPayloadGiB').value = 1;
+
+    $('workloadBlockKB').value = 256;
+
+    $('workloadReadSpeed').value = 1;
+
+    $('workloadWriteSpeed').value = 1;
+
+    $('readRatio').value =
+      70;
+
+    $('blocks').value =
+      100;
+
+    $('scheduler').value =
+      'molecular_aware';
+
+    $('prefetchEnabled').checked =
+      false;
+
+    $('prefetchDepth').value =
+      1;
+
+    $('enduranceEnabled').checked =
+      true;
+
+    sync();
+
+    setPresetState('balanced');
+
+  };
+
+
+$('preset2').onclick =
+  () => {
+
+    $('channels').value =
+      2;
+
+    $('cache').value =
+      4;
+
+    $('error').value =
+      10;
+
+    $('workloadPayloadGiB').value = 1;
+
+    $('workloadBlockKB').value = 128;
+
+    $('workloadReadSpeed').value = 1;
+
+    $('workloadWriteSpeed').value = 1;
+
+    $('readRatio').value =
+      70;
+
+    $('blocks').value =
+      100;
+
+    $('scheduler').value =
+      'fifo';
+
+    $('prefetchEnabled').checked =
+      false;
+
+    $('prefetchDepth').value =
+      1;
+
+    $('enduranceEnabled').checked =
+      true;
+
+    sync();
+
+    setPresetState('stress');
+
+  };
+
+
+
+$('presetCustom').onclick =
+  () => {
+    setPresetState('custom');
+  };
+
+
+$('stopRun').onclick = async () => {
+  const btn=$('stopRun');
+  btn.disabled=true; btn.textContent='■ STOPPING…';
+  setRunMessage('Requesting clean cancellation from the Python engine…');
+  try{
+    await fetch(API+'/cancel',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+  }catch(_e){ btn.disabled=false; btn.textContent='■ Stop'; }
+};
+
+
+$('run').onclick =
+  async () => {
+
+
+    if(
+      scalingRunning
+    ){
+
+      return;
+
+    }
+
+
+    const cfg =
+      buildConfig();
+
+    // One immutable identity binds /simulate and every /progress poll for this run.
+    cfg._client_run_id = (globalThis.crypto && crypto.randomUUID) ? crypto.randomUUID() : ('run-'+Date.now()+'-'+Math.random().toString(16).slice(2));
+
+    resetMetrics();
+    startRunUI(cfg);
+
+
+    log(
+      'Submitting configuration to Python discrete-event engine...'
+    );
+
+
+    $('run').disabled =
+      true;
+
+
+    try{
+
+
+      beginWaitingPipeline(
+        cfg
+      );
+
+
+      const simulation =
+        await runSimulation(
+          cfg
+        );
+
+
+      // The Python engine has returned its result object. Do not replay a synthetic
+      // stage sequence here: live pipeline state is driven exclusively by /progress.
+      setRunMessage('Finalizing simulation results…');
+
+      // Refuse to commit a response that does not belong to the run currently on screen.
+      if(simulation.run_id && simulation.run_id !== cfg._client_run_id){
+        throw new Error('Simulation run identity mismatch; stale result rejected.');
+      }
+
+      window.__lastTransactionResult = simulation.result;
+      window.__lastTransactionConfig = {...cfg};
+
+      displayResult(
+        simulation.result,
+        cfg
+      );
+
+      // The /simulate response proves Python has assembled the final result object.
+      // Paint the cards first, then atomically mark the UI complete on the next frame.
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      commitMainResultCards();
+      if(typeof window.markFrontendResultComplete==='function'){
+        window.markFrontendResultComplete();
+      }
+
+
+      log(
+        `Python engine completed ${cfg.transactions.toLocaleString()} transactions.`
+      );
+
+
+      log(
+        `Mode: ${currentMode}; channels: ${cfg.channels}; scheduler: ${cfg.scheduler}; prefetch: ${cfg.prefetch.enabled ? 'ON' : 'OFF'}.`
+      );
+
+
+      if(
+        currentMode === 'research'
+      ){
+
+        await runScalingPreview(
+          cfg
+        );
+
+      }
+
+
+    }
+    catch(error){
+
+
+      if(error.cancelled){
+        log('Simulation stopped by user. Partial execution was discarded.');
+        const state=document.getElementById('pipelineState'); if(state)state.textContent='SIMULATION STOPPED';
+        const mini=document.getElementById('overviewPipelineState'); if(mini)mini.textContent='SIMULATION STOPPED';
+        setRunMessage('Run stopped. No incomplete result has been reported as final.');
+      } else log('ERROR: ' + error.message);
+
+
+      if(!error.cancelled){
+        log('Confirm frontend_api.py is running on port 8766.');
+        alert('Simulation failed. Check the Python API window and simulator log.');
+      }
+
+
+    }
+    finally{
+
+
+      stopRunUI();
+      $('run').disabled =
+        false;
+
+
+    }
+
+  };
+
+
+function getScalingChannels(){
+
+  const values =
+    $('scalingChannels')
+      .value
+      .split(',')
+      .map(
+        value =>
+          Number(
+            value.trim()
+          )
+      )
+      .filter(
+        value =>
+          Number.isInteger(value) &&
+          value > 0
+      );
+
+
+  return [
+    ...new Set(
+      values
+    )
+  ];
+
+}
+
+
+async function runScalingPreview(
+  baseCfg
+){
+
+  if(
+    scalingRunning
+  ){
+
+    return;
+
+  }
+
+
+  scalingRunning =
+    true;
+
+  // The main run is already complete and its results are already committed
+  // to the cards at this point — this is a separate, optional background
+  // sweep. Say so explicitly so a "still busy" look doesn't read as the
+  // main simulation being stuck.
+  const scalingRunButton = $('run');
+  if(scalingRunButton){
+    scalingRunButton.textContent = '● SCALING PREVIEW…';
+  }
+
+  const scalingActivityLabel = document.getElementById('runActivityLabel');
+  const scalingActivityMsg = document.getElementById('runActivityMessage');
+  if(scalingActivityLabel){
+    scalingActivityLabel.textContent = 'Main run complete';
+  }
+  if(scalingActivityMsg){
+    scalingActivityMsg.textContent =
+      'Running Channel Scaling Preview in the background — results above are already final.';
+  }
+
+
+  $('scalingStatus').textContent =
+    'Running...';
+
+
+  $('bars').innerHTML =
+    '';
+
+
+  let channelCounts =
+    getScalingChannels();
+
+
+  if(
+    !channelCounts.length
+  ){
+
+    channelCounts =
+      [1,2,4,8,16,32,64,120];
+
+  }
+
+
+  const results =
+    [];
+
+
+  $('scalingNote').textContent =
+    'Scaling preview executing: ' +
+    channelCounts.join(', ') +
+    ' channels.';
+
+
+  log(
+    'Starting channel scaling experiment...'
+  );
+
+
+  for(
+    const channels
+    of channelCounts
+  ){
+
+    const cfg = {
+      ...baseCfg,
+      channels:channels
+    };
+    // Scaling runs are independent experiments and must not reuse the main run identity.
+    delete cfg._client_run_id;
+
+
+    log(
+      `Scaling test: ${channels} channel${channels === 1 ? '' : 's'}...`
+    );
+
+
+    try{
+
+
+      const simulation =
+        await runSimulation(
+          cfg
+        );
+
+
+      const result =
+        simulation.result;
+
+
+      const throughput =
+        Number(
+          result.throughput_bytes_per_s ||
+          result.throughput_bps ||
+          result.throughput ||
+          0
+        );
+
+
+      results.push({
+        channels:channels,
+        throughput:throughput
+      });
+
+
+      log(
+        `${channels} channels → ${(throughput / 1000000).toFixed(2)} MB/s`
+      );
+
+
+    }
+    catch(error){
+
+
+      log(
+        `Scaling test failed at ${channels} channels: ${error.message}`
+      );
+
+
+    }
+
+  }
+
+
+  drawScalingBars(
+    results,
+    baseCfg.channels
+  );
+
+
+  $('scalingStatus').textContent =
+    results.length
+      ? 'Complete'
+      : 'Failed';
+
+
+  if(
+    results.length
+  ){
+
+    log(
+      'Channel scaling experiment completed.'
+    );
+
+  }
+
+
+  scalingRunning =
+    false;
+
+}
+
+
+function drawScalingBars(
+  results,
+  currentChannels
+){
+
+  const container =
+    $('bars');
+
+
+  container.innerHTML =
+    '';
+
+
+  if(
+    !results.length
+  ){
+
+    container.innerHTML =
+      '<div style="color:#8ea1b9;font-size:11px;padding:20px">No scaling data available.</div>';
+
+    return;
+
+  }
+
+
+  const maxThroughput =
+    Math.max(
+      ...results.map(
+        item =>
+          item.throughput
+      ),
+      1
+    );
+
+
+  results.forEach(
+    item => {
+
+
+      const wrap =
+        document.createElement(
+          'div'
+        );
+
+
+      wrap.className =
+        'bar-wrap';
+
+
+      const bar =
+        document.createElement(
+          'div'
+        );
+
+
+      bar.className =
+        'bar' +
+        (
+          Number(
+            item.channels
+          ) ===
+          Number(
+            currentChannels
+          )
+            ? ' current'
+            : ''
+        );
+
+
+      bar.style.height =
+        Math.max(
+          4,
+          (
+            item.throughput
+            /
+            maxThroughput
+          ) * 100
+        ) +
+        '%';
+
+
+      const value =
+        document.createElement(
+          'div'
+        );
+
+
+      value.className =
+        'bar-value';
+
+
+      value.textContent =
+        (
+          item.throughput
+          / 1000000
+        ).toFixed(2) +
+        ' MB/s';
+
+
+      bar.appendChild(
+        value
+      );
+
+
+      const label =
+        document.createElement(
+          'div'
+        );
+
+
+      label.className =
+        'bar-label';
+
+
+      label.textContent =
+        item.channels +
+        ' CH';
+
+
+      wrap.appendChild(
+        bar
+      );
+
+
+      wrap.appendChild(
+        label
+      );
+
+
+      container.appendChild(
+        wrap
+      );
+
+
+    }
+  );
+
+}
+
+
+
+function fmtMs(value){
+  if(value === undefined || value === null || Number.isNaN(Number(value))){
+    return '--';
+  }
+  return Number(value).toFixed(3) + ' ms';
+}
+
+
+function renderStageGrid(id, stages){
+  const container = $(id);
+  container.innerHTML = '';
+
+  const entries = Object.entries(stages || {});
+
+  if(!entries.length){
+    container.innerHTML =
+      '<div class="stage-chip"><div class="name">No stage telemetry</div><div class="time">--</div></div>';
+    return;
+  }
+
+  entries.forEach(([name, value]) => {
+    const chip = document.createElement('div');
+    chip.className = 'stage-chip';
+
+    const label = document.createElement('div');
+    label.className = 'name';
+    label.textContent = name.replaceAll('_', ' ');
+
+    const time = document.createElement('div');
+    time.className = 'time';
+    time.textContent = fmtMs(value);
+
+    chip.appendChild(label);
+    chip.appendChild(time);
+    container.appendChild(chip);
+  });
+}
+
+
+function displayCoreLatency(row){
+  $('coldReadLatency').textContent =
+    fmtMs(row.mean_cold_read_latency_ms);
+
+  $('hotReadLatency').textContent =
+    fmtMs(row.mean_hot_read_latency_ms);
+
+  $('writeLatency').textContent =
+    fmtMs(row.mean_write_latency_ms);
+
+  $('roundtripLatency').textContent =
+    fmtMs(row.mean_roundtrip_latency_ms);
+
+  $('coldHotRatio').textContent =
+    row.cold_hot_acceleration_ratio !== undefined &&
+    row.cold_hot_acceleration_ratio !== null
+      ? Number(row.cold_hot_acceleration_ratio).toFixed(2) + '×'
+      : '--';
+
+  renderStageGrid(
+    'coldReadStages',
+    row.cold_read_stage_mean_ms
+  );
+
+  renderStageGrid(
+    'writeStages',
+    row.write_stage_mean_ms
+  );
+}
+
+
+function displayTargetLatency(rows){
+  const body = $('targetLatencyBody');
+  body.innerHTML = '';
+
+  if(!Array.isArray(rows) || !rows.length){
+    body.innerHTML =
+      '<tr><td colspan="7" style="text-align:center;color:var(--muted)">No target-latency data returned.</td></tr>';
+    return;
+  }
+
+  rows.forEach(row => {
+    const tr = document.createElement('tr');
+
+    const statusCell = (value, feasible) =>
+      `<span class="${feasible ? 'pass' : 'fail-target'}">${fmtMs(value)}</span>`;
+
+    tr.innerHTML = `
+      <td>${Number(row.target_latency_ms).toLocaleString()} ms</td>
+      <td>${statusCell(row.modeled_mean_cold_read_ms, row.cold_read_target_feasible_with_current_model)}</td>
+      <td>${statusCell(row.modeled_mean_write_ms, row.write_target_feasible_with_current_model)}</td>
+      <td>${statusCell(row.modeled_mean_roundtrip_ms, row.roundtrip_target_feasible_with_current_model)}</td>
+      <td>${fmtMs(row.cold_read_available_physical_budget_ms)}</td>
+      <td>${fmtMs(row.write_available_physical_budget_ms)}</td>
+      <td>${fmtMs(row.roundtrip_available_physical_budget_ms)}</td>
+    `;
+
+    body.appendChild(tr);
+  });
+}
+
+
+async function fetchResearchExperiment(path){
+  const response = await fetch(API + path);
+
+  let payload = {};
+  try{
+    payload = await response.json();
+  }
+  catch(_){
+    throw new Error(
+      `API returned ${response.status} without JSON. frontend_api.py must expose ${path}.`
+    );
+  }
+
+  if(!response.ok || payload.ok === false){
+    throw new Error(
+      payload.error ||
+      `Research endpoint ${path} returned HTTP ${response.status}.`
+    );
+  }
+
+  return payload.result ?? payload.results ?? payload.data ?? payload;
+}
+
+
+$('runCoreLatency').onclick = async () => {
+  if(window.getActiveSimulator && window.getActiveSimulator()==='benchmark'){
+    if(typeof window.refreshBenchmarkReadWrite==='function'){
+      await window.refreshBenchmarkReadWrite();
+    }
+    return;
+  }
+  $('runCoreLatency').disabled = true;
+  $('coreLatencyStatus').textContent = 'Running host-visible latency analysis...';
+
+  try{
+    const data = await fetchResearchExperiment('/experiment/host-latency');
+    const row = Array.isArray(data) ? data[0] : data;
+
+    displayCoreLatency(row || {});
+    $('coreLatencyStatus').textContent = 'Host-visible latency analysis complete.';
+    log('Host-visible latency analysis completed.');
+  }
+  catch(error){
+    $('coreLatencyStatus').textContent = 'API endpoint not available.';
+    log('Experiment 8 ERROR: ' + error.message);
+    alert(
+      'The host-visible latency endpoint is unavailable. frontend_api.py must expose /experiment/host-latency.'
+    );
+  }
+  finally{
+    $('runCoreLatency').disabled = false;
+  }
+};
+
+
+$('loadTargetLatency').onclick = async () => {
+  if(window.getActiveSimulator && window.getActiveSimulator()==='benchmark'){
+    if(typeof window.refreshBenchmarkTargets==='function'){
+      await window.refreshBenchmarkTargets();
+    }
+    return;
+  }
+  $('loadTargetLatency').disabled = true;
+  $('targetLatencyStatus').textContent = 'Running target-latency analysis...';
+
+  try{
+    const data = await fetchResearchExperiment('/experiment/target-latency');
+    const rows = Array.isArray(data) ? data : [data];
+
+    displayTargetLatency(rows);
+    $('targetLatencyStatus').textContent = 'Target-latency analysis complete.';
+    log('Target-latency and bottleneck analysis completed.');
+  }
+  catch(error){
+    $('targetLatencyStatus').textContent = 'API endpoint not available.';
+    log('Experiment 9 ERROR: ' + error.message);
+    alert(
+      'The target-latency endpoint is unavailable. frontend_api.py must expose /experiment/target-latency.'
+    );
+  }
+  finally{
+    $('loadTargetLatency').disabled = false;
+  }
+};
+
+
+
+
+$('technologyProfile').addEventListener(
+  'change',
+  () => {
+    $('customTechnologyInputs').classList.toggle(
+      'hidden',
+      $('technologyProfile').value !== 'custom'
+    );
+  }
+);
+
+
+function displayTechnologyGap(data){
+  const row = Array.isArray(data) ? data[0] : data;
+
+  const show = (metric, valueId, hintId) => {
+    if(!metric){
+      $(valueId).textContent = '--';
+      $(hintId).textContent = '--';
+      return;
+    }
+
+    const slowdown = Number(
+      metric.slowdown_factor_vs_umdi_target
+    );
+
+    $(valueId).textContent =
+      slowdown.toFixed(2) + '×';
+
+    $(hintId).textContent =
+      `Test ${fmtMs(metric.test_latency_ms)} · UMDI target ${fmtMs(metric.umdi_target_latency_ms)} · ${Number(metric.required_latency_reduction_pct).toFixed(2)}% reduction required`;
+  };
+
+  show(
+    row.cold_read,
+    'tgColdRead',
+    'tgColdReadHint'
+  );
+
+  show(
+    row.write,
+    'tgWrite',
+    'tgWriteHint'
+  );
+
+  show(
+    row.roundtrip,
+    'tgRoundtrip',
+    'tgRoundtripHint'
+  );
+
+  $('technologyGapNote').textContent =
+    row.comparison_warning ||
+    'Technology-gap analysis completed.';
+}
+
+
+
+function renderOptimizationTargets(row){
+  const body = $('optimizationBody');
+
+  if(
+    !row ||
+    !Array.isArray(row.optimization_targets)
+  ){
+    body.innerHTML =
+      '<tr><td colspan="7" style="text-align:center;color:var(--muted)">Stage-level optimization ranking is available for Custom Researcher Measurements.</td></tr>';
+
+    $('dominantBottleneck').textContent =
+      'Custom measurements required for stage-level ranking.';
+
+    return;
+  }
+
+  $('dominantBottleneck').textContent =
+    'Priority bottleneck: ' +
+    (
+      row.dominant_bottleneck_label ||
+      'None'
+    );
+
+  body.innerHTML = '';
+
+  row.optimization_targets.forEach(item => {
+    const tr = document.createElement('tr');
+
+    const status =
+      item.meets_target
+        ? '<span class="pass">MEETS TARGET</span>'
+        : '<span class="fail-target">OPTIMIZE</span>';
+
+    tr.innerHTML = `
+      <td>${item.priority_rank}</td>
+      <td>${item.label}</td>
+      <td>${fmtMs(item.current_latency_ms)}</td>
+      <td>${fmtMs(item.umdi_target_latency_ms)}</td>
+      <td>${Number(item.slowdown_factor_vs_target).toFixed(2)}×</td>
+      <td>${Number(item.required_reduction_pct).toFixed(2)}%</td>
+      <td>${status}</td>
+    `;
+
+    body.appendChild(tr);
+  });
+}
+
+
+$('runTechnologyGap').onclick = async () => {
+  $('runTechnologyGap').disabled = true;
+  $('technologyGapStatus').textContent =
+    'Running technology-gap analysis...';
+
+  try{
+    let payload;
+
+    if($('technologyProfile').value === 'custom'){
+      const body = {
+        profile_name: 'Custom Researcher Hardware',
+        molecular_access_ms:
+          Number($('tgMolecularAccess').value),
+        sensing_ms:
+          Number($('tgSensing').value),
+        basecalling_ms:
+          Number($('tgBasecalling').value),
+        molecular_write_ms:
+          Number($('tgMolecularWrite').value),
+        write_verification_ms:
+          Number($('tgWriteVerification').value),
+      };
+
+      const response = await fetch(
+        API + '/technology-gap/custom',
+        {
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json'
+          },
+          body:JSON.stringify(body)
+        }
+      );
+
+      const result = await response.json();
+
+      if(!response.ok || result.ok === false){
+        throw new Error(
+          result.error ||
+          'Custom technology-gap analysis failed'
+        );
+      }
+
+      payload = result.result;
+    }
+    else{
+      payload = await fetchResearchExperiment(
+        '/technology-gap'
+      );
+    }
+
+    displayTechnologyGap(payload);
+
+    const optimizationRow =
+      Array.isArray(payload)
+        ? payload[0]
+        : payload;
+
+    renderOptimizationTargets(
+      optimizationRow
+    );
+
+    $('technologyGapStatus').textContent =
+      'Technology-gap analysis complete.';
+
+    log(
+      'Technology-gap analysis completed.'
+    );
+  }
+  catch(error){
+    $('technologyGapStatus').textContent =
+      'Technology-gap analysis failed.';
+
+    log(
+      'Technology-gap ERROR: ' +
+      error.message
+    );
+
+    alert(
+      'Technology-gap analysis failed. Confirm frontend_api.py is running and contemporary_baseline.json is in configs.'
+    );
+  }
+  finally{
+    $('runTechnologyGap').disabled = false;
+  }
+};
+
+
+
+[
+  'channels',
+  'cache',
+  'error',
+  'transactions',
+  'workloadPayloadGiB',
+  'workloadBlockKB',
+  'workloadReadSpeed',
+  'workloadWriteSpeed',
+  'readRatio',
+  'blocks',
+  'prefetchDepth',
+  'maxRewrites',
+  'degradationStart',
+  'failureAtLimit',
+  'degradationExponent'
+]
+.forEach(
+  id => {
+
+    $(id)
+      .addEventListener(
+        'input',
+        sync
+      );
+
+  }
+);
+
+
+$('prefetchEnabled')
+  .addEventListener(
+    'change',
+    sync
+  );
+
+
+$('enduranceEnabled')
+  .addEventListener(
+    'change',
+    sync
+  );
+
+
+
+
+[
+  'channels',
+  'scheduler',
+  'cache',
+  'error',
+  'transactions',
+  'workloadPayloadGiB',
+  'workloadBlockKB',
+  'workloadReadSpeed',
+  'workloadWriteSpeed',
+  'seed',
+  'readRatio',
+  'blocks',
+  'prefetchEnabled',
+  'prefetchDepth',
+  'enduranceEnabled',
+  'maxRewrites',
+  'degradationStart',
+  'failureAtLimit',
+  'degradationExponent',
+  'scalingChannels'
+].forEach(id => {
+  const element = $(id);
+
+  if(!element){
+    return;
+  }
+
+  const eventName =
+    (
+      element.tagName === 'SELECT' ||
+      element.type === 'checkbox'
+    )
+      ? 'change'
+      : 'input';
+
+  element.addEventListener(
+    eventName,
+    () => {
+      markCustomConfiguration();
+    }
+  );
+});
+
+
+sync();
+
+drawChannels(0);
+
+resetPipeline();
+
+setPresetState('custom');
+
+setMode(
+  localStorage.getItem(
+    'umdi_ui_mode'
+  ) === 'quick'
+    ? 'quick'
+    : 'research'
+);
+
+</script>
+<aside class="help-drawer hidden" id="helpDrawer">
+<div class="help-head"><strong>Simulator Help</strong><button id="closeHelp">×</button></div>
+<div class="help-body">
+<h3>Getting started</h3>
+<ol><li>Choose Quick Mode for the simplest workflow or Research Mode for all analyses.</li><li>Set the configuration or load a preset.</li><li>Click Run Simulation.</li><li>Use the analysis tabs to inspect only the result you need.</li></ol>
+<h3>Modes</h3><p><b>Quick Mode</b> keeps the core workflow visible. <b>Research Mode</b> exposes target, technology-gap, pipeline and scaling analyses.</p>
+<h3>Benchmark</h3><p>The Benchmark tab reproduces the published SSD-class optimized configuration. Change its parameters to test your own architecture against the reference.</p>
+<h3>Useful tip</h3><p>Hover over technical labels and controls for short explanations. Your mode and onboarding preference are remembered on this browser.</p>
+</div>
+</aside><div class="onboarding hidden" id="onboarding">
+<div class="tour-card">
+<div class="tour-step" id="tourStep">1 of 4</div><h2 id="tourTitle">Welcome to BioSSD</h2><p id="tourText">Start in Quick Mode for a simple run, or switch to Research Mode when you need the full experimental toolkit.</p>
+<div class="tour-actions"><button id="tourSkip">Don't show again</button><button class="primary" id="tourNext">Next</button></div>
+</div>
+</div><script>
+(function(){
+  const q=id=>document.getElementById(id);
+  const tabs=[...document.querySelectorAll('.workspace-tab')];
+  const simulatorButtons=[...document.querySelectorAll('.simulator-mode-button')];
+  let activeSimulator=localStorage.getItem('umdi_active_simulator')==='benchmark'?'benchmark':'workload';
+  function applySimulatorContext(){
+    document.querySelector('main')?.classList.toggle('benchmark-context',activeSimulator==='benchmark');
+    simulatorButtons.forEach(b=>b.classList.toggle('active',b.dataset.simulator===activeSimulator));
+    const intro=q('simulatorContextIntro');
+    if(intro){
+      intro.innerHTML=activeSimulator==='benchmark'
+        ? '<b>Benchmark Simulator</b> evaluates large-payload BioSSD performance against SSD-class targets using payload size, logical-block size, molecular channels and READ/WRITE-path acceleration.'
+        : '<b>Transaction Simulator</b> models how BioSSD behaves under mixed READ/WRITE activity, including queueing, caching, scheduling, errors and molecular-channel use, while evaluating system behavior against SSD-class operational targets.';
+    }
+  }
+  function openTab(name){
+    localStorage.setItem('umdi_active_simulator',activeSimulator);
+    applySimulatorContext();
+    tabs.forEach(b=>b.classList.toggle('active',b.dataset.tab===name));
+    document.querySelectorAll('.workspace-pane').forEach(p=>p.classList.toggle('active',p.dataset.pane===name));
+    localStorage.setItem('umdi_active_tab',name);
+  }
+  function selectSimulator(name){
+    const nextSimulator=name==='benchmark'?'benchmark':'workload';
+    const changed=nextSimulator!==activeSimulator;
+    activeSimulator=nextSimulator;
+    localStorage.setItem('umdi_active_simulator',activeSimulator);
+    if(changed && typeof window.clearSharedAnalysis==='function'){
+      window.clearSharedAnalysis(activeSimulator);
+    }
+    applySimulatorContext();
+    openTab(activeSimulator==='benchmark'?'benchmark':'overview');
+  }
+  window.openWorkspaceTab=openTab;
+  window.selectSimulator=selectSimulator;
+  window.getActiveSimulator=()=>activeSimulator;
+  tabs.forEach(b=>b.addEventListener('click',()=>openTab(b.dataset.tab)));
+  simulatorButtons.forEach(b=>b.addEventListener('click',()=>selectSimulator(b.dataset.simulator)));
+
+  // Replace the old one-button mode discovery problem with an explicit two-button selector.
+  const originalSetMode=window.setMode || setMode;
+  window.setMode=function(mode){
+    originalSetMode(mode);
+    const research=mode!=='quick';
+    q('modeQuick').classList.toggle('active',!research);
+    q('modeResearch').classList.toggle('active',research);
+    if(!research){ selectSimulator('workload'); }
+  };
+  q('modeQuick').addEventListener('click',()=>window.setMode('quick'));
+  q('modeResearch').addEventListener('click',()=>window.setMode('research'));
+
+  // Keep compact configuration summary current.
+  function updateSummary(){
+    q('configSummaryText').textContent=`${Number(q('channels').value).toLocaleString()} ch · ${Number(q('transactions').value).toLocaleString()} tx · ${q('scheduler').value==='fifo'?'FIFO':'Molecular-aware'}`;
+  }
+  ['channels','transactions','scheduler','cache','error','readRatio','blocks','workloadPayloadGiB','workloadBlockKB','workloadReadSpeed','workloadWriteSpeed'].forEach(id=>q(id)?.addEventListener('input',updateSummary));
+  updateSummary();
+
+  // Help drawer.
+  q('helpButton').addEventListener('click',()=>q('helpDrawer').classList.remove('hidden'));
+  q('closeHelp').addEventListener('click',()=>q('helpDrawer').classList.add('hidden'));
+
+  // First-launch onboarding: brief, dismissible, never traps experienced users.
+  const tour=[
+    ['Welcome to BioSSD','Start in Quick Mode for a simple run, or switch to Research Mode when you need the full experimental toolkit.'],
+    ['Configure, then run','Use a preset or change the core parameters on the left. Advanced controls stay collapsed until you need them.'],
+    ['Two simulators, shared analysis','Use Transaction Simulator for mixed storage activity or Benchmark Simulator for the standardized large-payload test. READ / WRITE, Targets, Tech Gap, Pipeline and Scaling remain shared analysis views.'],
+    ['Reproduce the research','Open Benchmark Simulator to reproduce the published SSD-class optimized configuration, then change it and compare your own result.']
+  ];
+  let ti=0;
+  function renderTour(){q('tourStep').textContent=`${ti+1} of ${tour.length}`;q('tourTitle').textContent=tour[ti][0];q('tourText').textContent=tour[ti][1];q('tourNext').textContent=ti===tour.length-1?'Start':'Next';}
+  function dismissTour(){localStorage.setItem('umdi_onboarding_dismissed','1');q('onboarding').classList.add('hidden');}
+  q('tourSkip').addEventListener('click',dismissTour);
+  q('tourNext').addEventListener('click',()=>{if(ti>=tour.length-1){dismissTour();return;}ti++;renderTour();});
+  if(!localStorage.getItem('umdi_onboarding_dismissed')){renderTour();q('onboarding').classList.remove('hidden');}
+
+  // Fixed monograph benchmark reference. Fresh model output is shown separately as Current run.
+  const publishedReference={
+    cold_read_latency_ms:1235,
+    write_latency_ms:1201,
+    roundtrip_latency_ms:2436,
+    cold_read_throughput_bytes_per_s:869000000,
+    write_throughput_bytes_per_s:894000000
+  };
+  function fmtS(ms){return `${(Number(ms)/1000).toFixed(3)} s`;}
+  function fmtMBps(bps){return `${(Number(bps)/1e6).toFixed(0)} MB/s`;}
+  function resetBench(){q('benchPayload').value=1;q('benchChannels').value=4096;q('benchBlockKB').value=256;q('benchReadSpeed').value=4;q('benchWriteSpeed').value=8;q('benchmarkComparison').classList.add('hidden');}
+  async function runBench(){
+    const payload={payload_size_bytes:Number(q('benchPayload').value)*1024*1024*1024,channels:Number(q('benchChannels').value),logical_block_size_bytes:Number(q('benchBlockKB').value)*1024,read_path_speedup:Number(q('benchReadSpeed').value),write_path_speedup:Number(q('benchWriteSpeed').value)};
+    q('benchmarkComparison').classList.remove('hidden');q('benchmarkComparison').innerHTML='Running benchmark through the Python model…';
+    try{
+      const resp=await fetch(API+'/benchmark/custom',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      const data=await resp.json(); if(!data.ok) throw new Error(data.error||'Benchmark failed'); const x=data.result;
+      window.__lastBenchmarkResult=x;
+      window.__lastBenchmarkPayload={...payload};
+      if(typeof window.displayBenchmarkOverview==='function'){
+        window.displayBenchmarkOverview(x);
+      }
+      q('benchmarkComparison').innerHTML=`<div class="comparison-grid"><div class="comparison-head">Metric</div><div class="comparison-head">Published reference</div><div class="comparison-head">Current run</div>
+      <div>Payload</div><div>1 GiB</div><div>${x.payload_size_label}</div>
+      <div>Channels</div><div>4,096</div><div>${Number(x.channels).toLocaleString()}</div>
+      <div>Logical block</div><div>256 KiB</div><div>${x.logical_block_size_label}</div>
+      <div>READ acceleration</div><div>4×</div><div>${x.read_path_speedup}×</div>
+      <div>WRITE acceleration</div><div>8×</div><div>${x.write_path_speedup}×</div>
+      <div>READ latency</div><div>${fmtS(publishedReference.cold_read_latency_ms)}</div><div>${fmtS(x.cold_read_latency_ms)}</div>
+      <div>WRITE latency</div><div>${fmtS(publishedReference.write_latency_ms)}</div><div>${fmtS(x.write_latency_ms)}</div>
+      <div>Round trip</div><div>${fmtS(publishedReference.roundtrip_latency_ms)}</div><div>${fmtS(x.roundtrip_latency_ms)}</div>
+      <div>READ throughput</div><div>${fmtMBps(publishedReference.cold_read_throughput_bytes_per_s)}</div><div>${fmtMBps(x.cold_read_throughput_bytes_per_s)}</div>
+      <div>WRITE throughput</div><div>${fmtMBps(publishedReference.write_throughput_bytes_per_s)}</div><div>${fmtMBps(x.write_throughput_bytes_per_s)}</div></div>`;
+      return x;
+    }catch(err){q('benchmarkComparison').innerHTML=`<span class="red">${err.message}</span>`;return null;}
+  }
+  q('reproduceBenchmark').addEventListener('click',()=>{resetBench();runBench();});
+  q('runCustomBenchmark').addEventListener('click',runBench);
+  q('resetBenchmark').addEventListener('click',resetBench);
+  window.runActiveBenchmark=runBench;
+
+  // Restore mode and tab after our controls exist. Quick is the first-time default.
+  const savedMode=localStorage.getItem('umdi_ui_mode');
+  window.setMode(savedMode || 'quick');
+  const savedTab=localStorage.getItem('umdi_active_tab')||'overview';
+  if(savedTab==='benchmark') activeSimulator='benchmark';
+  applySimulatorContext();
+  if((savedMode||'quick')==='research' || ['overview','benchmark'].includes(savedTab)) openTab(savedTab); else openTab('overview');
+})();
+
+
+
+// Perceived-performance feedback and result-card guidance.
+let runUiTimer=null, runUiStarted=0, runMessageTimer=null, runMessageIndex=0;
+const runMessages=[
+  'Submitting workload to the BioSSD engine…',
+  'Processing host-visible molecular transactions…',
+  'Evaluating channel scheduling and molecular I/O…',
+  'Computing latency, throughput and reliability metrics…',
+  'Awaiting simulation results…'
+];
+function setRunMessage(text){const el=document.getElementById('runActivityMessage');if(el)el.textContent=text;}
+function formatElapsed(ms){const s=ms/1000,m=Math.floor(s/60),r=s-m*60;return String(m).padStart(2,'0')+':'+r.toFixed(1).padStart(4,'0');}
+function commitMainResultCards(){
+  // Decoupled from stopRunUI() on purpose: this must fire the moment the main
+  // run's real numbers are painted, NOT after an optional Research-Mode
+  // scaling sweep finishes. Otherwise the pipeline can honestly say complete
+  // while the cards are still stuck showing "Calculating…".
+  document.querySelectorAll('#pane-overview .metric').forEach(m=>m.classList.remove('is-loading'));
+}
+function startRunUI(cfg){
+  window.__biossdResultsCommitted=false;
+  const activity=document.getElementById('runActivity'), btn=document.getElementById('run'), pipe=document.getElementById('overviewPipeline');
+  if(activity)activity.classList.remove('hidden'); if(pipe)pipe.classList.add('is-running');
+  if(btn){btn.classList.add('is-running');btn.textContent='● RUNNING';}
+  const stopBtn=document.getElementById('stopRun'); if(stopBtn){stopBtn.style.display='inline-flex';stopBtn.disabled=false;stopBtn.textContent='■ Stop';}
+  if(typeof window.startMiniRunPipeline==='function') window.startMiniRunPipeline();
+  document.querySelectorAll('#pane-overview .metric').forEach(m=>m.classList.add('is-loading'));
+  runUiStarted=performance.now(); runMessageIndex=0; setRunMessage(runMessages[0]);
+  clearInterval(runUiTimer); runUiTimer=setInterval(()=>{const e=document.getElementById('runElapsed');if(e)e.textContent=formatElapsed(performance.now()-runUiStarted)},100);
+  clearInterval(runMessageTimer); runMessageTimer=setInterval(()=>{runMessageIndex=(runMessageIndex+1)%runMessages.length;setRunMessage(runMessages[runMessageIndex]);},2200);
+}
+function stopRunUI(){
+  clearInterval(runUiTimer);clearInterval(runMessageTimer);runUiTimer=runMessageTimer=null;
+  if(typeof window.stopMiniRunPipeline==='function' && document.getElementById('overviewPipeline')?.classList.contains('is-running')) window.stopMiniRunPipeline(document.getElementById('pipelineProgressFill')?.style.width==='100%' ? (document.getElementById('pipelineState')?.textContent||'SIMULATION COMPLETE') : 'READY');
+  const activity=document.getElementById('runActivity'),btn=document.getElementById('run'),pipe=document.getElementById('overviewPipeline');
+  // Safety net: if a run ends early (error/cancel) before commitMainResultCards()
+  // ever ran, this still clears the loading state so cards don't stay stuck.
+  document.querySelectorAll('#pane-overview .metric').forEach(m=>m.classList.remove('is-loading'));
+  if(pipe)pipe.classList.remove('is-running');
+  if(btn){btn.classList.remove('is-running');btn.textContent='▶ Run Simulation';}
+  const stopBtn=document.getElementById('stopRun'); if(stopBtn){stopBtn.style.display='none';stopBtn.disabled=false;stopBtn.textContent='■ Stop';}
+  if(activity){
+    const label=document.getElementById('runActivityLabel'),msg=document.getElementById('runActivityMessage');
+    const state=document.getElementById('pipelineState')?.textContent||'';
+    const stopped=state.includes('STOPPED');
+    const committed=window.__biossdResultsCommitted===true;
+    if(label)label.textContent=stopped?'Simulation stopped':committed?'Simulation complete':'Simulation ended';
+    if(msg)msg.textContent=stopped?'Run stopped without publishing incomplete results.':committed?'Results synchronized with backend execution state.':'No final result was committed.';
+    setTimeout(()=>activity.classList.add('hidden'),1800);
+  }
+}
+const resultHelp={
+ lat:'Average host-visible latency across completed simulated storage transactions. Lower values indicate faster request completion.',
+ thr:'Effective data throughput produced by the current workload and configuration. Higher values indicate greater sustained data movement.',
+ hit:'Percentage of eligible READ requests served by electronic cache instead of requiring molecular access.',
+ rec:'Percentage of injected/recoverable errors successfully corrected by the modeled recovery and ECC process.',
+ active:'Number of molecular channels that were actually active during the simulated workload.',
+ requests:'Total storage requests submitted in this simulation run.', completed:'Requests that completed successfully.', failed:'Requests that did not complete successfully under the selected model assumptions.',
+ p95:'95th-percentile latency: 95% of completed transactions finished at or below this time. Useful for seeing slow-tail behavior.',
+ successRate:'Percentage of submitted transactions that completed successfully.', molecularReads:'READ operations that required access to the modeled molecular storage layer.', molecularWrites:'WRITE operations executed against the modeled molecular storage layer.',
+ errorsInjected:'Modeled errors introduced according to the configured error probability.', errorsRecovered:'Injected errors successfully recovered by the modeled correction/recovery process.',
+ simulationTime:'Duration represented inside the simulated workload. This is not the wall-clock time your computer spent calculating the run.',
+ meanUtil:'Average utilization of the available molecular channels during the workload.', peakQueue:'Maximum number of requests waiting for service at any point in the simulation.',
+ prefetchAttempts:'Number of predictive prefetch operations attempted by the controller model.', prefetchCompleted:'Prefetch operations that completed successfully.', prefetchTime:'Modeled time spent servicing prefetch activity.',
+ enduranceFailures:'Operations that failed because modeled rewrite/endurance limits were exceeded.', maxRewriteCycles:'Highest rewrite-cycle count reached by any modeled logical block.'
+};
+Object.entries(resultHelp).forEach(([id,text])=>{const value=document.getElementById(id);const card=value&&value.closest('.metric');if(card){card.setAttribute('title',text);card.style.cursor='help';}});
+
+
+
+(function releaseCandidateClarity(){
+  const benchDefaults={benchPayload:'1',benchChannels:'4096',benchBlockKB:'256',benchReadSpeed:'4',benchWriteSpeed:'8'};
+  function syncBenchmarkModified(){
+    Object.entries(benchDefaults).forEach(([id,ref])=>{
+      const el=document.getElementById(id); if(!el) return;
+      const label=el.closest('label'); if(label) label.classList.toggle('bench-modified', String(Number(el.value))!==String(Number(ref)));
+    });
+  }
+  Object.keys(benchDefaults).forEach(id=>{const el=document.getElementById(id);if(el){el.addEventListener('input',syncBenchmarkModified);el.addEventListener('change',syncBenchmarkModified);}});
+  const reset=document.getElementById('resetBenchmark'), reproduce=document.getElementById('reproduceBenchmark');
+  if(reset) reset.addEventListener('click',()=>setTimeout(syncBenchmarkModified,0));
+  if(reproduce) reproduce.addEventListener('click',()=>setTimeout(syncBenchmarkModified,0));
+  syncBenchmarkModified();
+
+  const helpById={
+    coldReadLatency:'Host-visible latency for the first READ that must retrieve data from the modeled molecular medium.',
+    hotReadLatency:'Host-visible latency for a repeated READ served from electronic cache rather than molecular retrieval.',
+    writeLatency:'Host-visible time from WRITE request admission through verified molecular write completion.',
+    roundtripLatency:'Combined WRITE followed by a forced cold molecular READ of the newly written data.',
+    coldHotRatio:'Acceleration factor achieved when a repeated READ is served from electronic cache instead of the molecular medium.',
+    tgColdRead:'Gap between the selected technology profile and the UMDI cold-READ target baseline.',
+    tgWrite:'Gap between the selected technology profile and the UMDI WRITE target baseline.',
+    tgRoundtrip:'Gap between the selected technology profile and the UMDI WRITE-to-READ round-trip target.',
+    refRead:'Published modeled READ latency for the BioSSD SSD-class reference configuration.',
+    refWrite:'Published modeled WRITE latency for the BioSSD SSD-class reference configuration.',
+    refRoundtrip:'Published modeled WRITE-to-READ round-trip latency for the reference configuration.',
+    refReadThr:'Published modeled READ throughput for the reference configuration.',
+    refWriteThr:'Published modeled WRITE throughput for the reference configuration.'
+  };
+  Object.entries(helpById).forEach(([id,text])=>{
+    const el=document.getElementById(id); if(!el) return;
+    const card=el.closest('.exp-card')||el.closest('.benchmark-result-grid div')||el;
+    card.setAttribute('title',text); card.style.cursor='help';
+  });
+  const buttonHelp={
+    reproduceBenchmark:'Loads the canonical published benchmark parameters and runs them through the Python model.',
+    runCustomBenchmark:'Runs the values currently entered in the benchmark fields so you can compare your configuration with the reference.',
+    resetBenchmark:'Restores the canonical benchmark parameters without running the experiment.',
+    loadTargetLatency:'Calculates engineering latency budgets across the configured target levels.',
+    runTechnologyGap:'Compares the selected demonstrated-technology profile or custom measurements against the UMDI target baseline.',
+    runCoreLatency:'Runs cold molecular READ, hot cached READ, verified WRITE, and WRITE-to-cold-READ latency experiments.'
+  };
+  Object.entries(buttonHelp).forEach(([id,text])=>{const el=document.getElementById(id);if(el)el.setAttribute('title',text);});
+})();
+
+// Refinement: functional animated identity mark, fast contextual tooltips, compact live pipeline mirror.
+(function refinementPass(){
+  const home=document.getElementById('homeLogo');
+  if(home) home.addEventListener('click',()=>{ if(typeof window.setMode==='function') window.setMode('research'); if(typeof window.selectSimulator==='function') window.selectSimulator('workload'); const shell=document.querySelector('.workspace-panes'); if(shell) shell.scrollTop=0; window.scrollTo({top:0,behavior:'smooth'}); });
+
+  const tip=document.createElement('div'); tip.className='ui-tooltip'; document.body.appendChild(tip);
+  let tipTarget=null;
+  document.addEventListener('mouseover',e=>{
+    const t=e.target.closest('[title]'); if(!t || !t.getAttribute('title')) return;
+    tipTarget=t; const text=t.getAttribute('title'); t.dataset.uiTitle=text; t.removeAttribute('title'); tip.textContent=text;
+    const r=t.getBoundingClientRect(); let x=Math.min(r.left,window.innerWidth-310), y=r.bottom+8; if(y+80>window.innerHeight)y=Math.max(8,r.top-70);
+    tip.style.left=Math.max(8,x)+'px'; tip.style.top=y+'px'; tip.classList.add('show');
+  });
+  document.addEventListener('mouseout',e=>{ if(!tipTarget) return; if(e.relatedTarget && tipTarget.contains(e.relatedTarget)) return; tip.classList.remove('show'); if(tipTarget.dataset.uiTitle){tipTarget.setAttribute('title',tipTarget.dataset.uiTitle);delete tipTarget.dataset.uiTitle;} tipTarget=null; });
+
+  // Compact and detailed pipeline state are controlled exclusively by the
+  // realBackendProgress block below. No synthetic timers or mirror observers
+  // are kept here, preventing two UI controllers from racing each other.
+})();
+</script>
+<script>
+/* Shared-analysis context bridge: keeps Transaction and Benchmark results from bleeding into each other. */
+(function sharedAnalysisContext(){
+  const byId=id=>document.getElementById(id);
+  const overviewMetricIds=[
+    'lat','thr','hit','rec','active','requests','completed','failed','p95','successRate',
+    'molecularReads','molecularWrites','errorsInjected','errorsRecovered','simulationTime',
+    'meanUtil','peakQueue','prefetchAttempts','prefetchCompleted','prefetchTime',
+    'enduranceFailures','maxRewriteCycles'
+  ];
+
+  function setText(id,value){
+    const el=byId(id);
+    if(el) el.textContent=value;
+  }
+
+  function resetReadWrite(){
+    ['coldReadLatency','hotReadLatency','writeLatency','roundtripLatency','coldHotRatio']
+      .forEach(id=>setText(id,'--'));
+    const cold=byId('coldReadStages'), write=byId('writeStages');
+    if(cold) cold.innerHTML='<div class="stage-chip"><div class="name">Awaiting analysis</div><div class="time">--</div></div>';
+    if(write) write.innerHTML='<div class="stage-chip"><div class="name">Awaiting analysis</div><div class="time">--</div></div>';
+    setText('coreLatencyStatus','Awaiting analysis for the active simulator.');
+  }
+
+  function resetTargets(){
+    const body=byId('targetLatencyBody');
+    if(body) body.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--muted)">Refresh analysis for the active simulator context.</td></tr>';
+    setText('targetLatencyStatus','Awaiting analysis for the active simulator.');
+  }
+
+  function resetTechGap(){
+    ['tgColdRead','tgWrite','tgRoundtrip','tgColdReadHint','tgWriteHint','tgRoundtripHint']
+      .forEach(id=>setText(id,'--'));
+    const body=byId('optimizationBody');
+    if(body) body.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--muted)">Refresh analysis for the active simulator context.</td></tr>';
+    setText('dominantBottleneck','Refresh analysis to calculate the current comparison.');
+    setText('technologyGapStatus','Awaiting analysis for the active simulator.');
+  }
+
+  function resetPipelineAnalysis(){
+    if(typeof resetPipeline==='function') resetPipeline();
+    document.querySelectorAll('[data-pipeline-stage]').forEach(stage=>{
+      stage.classList.remove('running','done','skipped');
+      stage.classList.add('pending');
+      stage.style.setProperty('--stage-progress','0%');
+      const t=stage.querySelector('.stage-live-time');
+      if(t) t.textContent='--';
+    });
+    const view=byId('channelsView'); if(view) view.innerHTML='';
+    setText('channelSummary','No active simulator analysis loaded.');
+    setText('pipelineAnalysisStatus','Awaiting analysis for the active simulator.');
+  }
+
+  function resetScaling(){
+    const bars=byId('bars'); if(bars) bars.innerHTML='';
+    setText('scalingStatus','Ready');
+    setText('scalingAnalysisStatus','Awaiting analysis for the active simulator.');
+    setText('scalingNote','Refresh analysis to run the channel sweep for the active simulator.');
+    const logEl=byId('log'); if(logEl) logEl.innerHTML='';
+  }
+
+  window.clearSharedAnalysis=function(simulator){
+    overviewMetricIds.forEach(id=>setText(id,'--'));
+    setText('overviewAnalysisStatus',
+      simulator==='benchmark'
+        ? 'Benchmark context selected · run or refresh the benchmark analysis.'
+        : 'Transaction context selected · run or refresh the transaction analysis.'
+    );
+    resetReadWrite();
+    resetTargets();
+    resetTechGap();
+    resetPipelineAnalysis();
+    resetScaling();
+  };
+
+  function benchmarkPayloadFromInputs(channelsOverride=null){
+    return {
+      payload_size_bytes:Number(byId('benchPayload').value)*1024*1024*1024,
+      channels:channelsOverride===null ? Number(byId('benchChannels').value) : Number(channelsOverride),
+      logical_block_size_bytes:Number(byId('benchBlockKB').value)*1024,
+      read_path_speedup:Number(byId('benchReadSpeed').value),
+      write_path_speedup:Number(byId('benchWriteSpeed').value)
+    };
+  }
+
+  async function fetchCurrentBenchmark(){
+    const payload=benchmarkPayloadFromInputs();
+    const resp=await fetch(API+'/benchmark/custom',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+    const data=await resp.json();
+    if(!resp.ok || !data.ok) throw new Error(data.error||'Benchmark analysis failed');
+    window.__lastBenchmarkResult=data.result;
+    window.__lastBenchmarkPayload=payload;
+    return data.result;
+  }
+
+  async function ensureBenchmarkResult(){
+    if(window.__lastBenchmarkResult) return window.__lastBenchmarkResult;
+    return await fetchCurrentBenchmark();
+  }
+
+  window.displayBenchmarkOverview=function(x){
+    if(!x) return;
+    setText('lat',`${Number(x.mean_path_latency_ms ?? ((x.cold_read_latency_ms+x.write_latency_ms)/2)).toFixed(2)} ms`);
+    const meanThr=Number(x.mean_path_throughput_bytes_per_s ?? ((x.cold_read_throughput_bytes_per_s+x.write_throughput_bytes_per_s)/2));
+    setText('thr',`${(meanThr/1e6).toFixed(2)} MB/s`);
+    setText('hit','N/A');
+    setText('rec','N/A');
+    setText('active',Number(x.active_channel_count ?? Math.min(x.channels,x.transactions_per_path)).toLocaleString());
+    setText('requests',`${Number(x.transactions_per_path).toLocaleString()} / path`);
+    setText('completed','N/A');
+    setText('failed','N/A');
+    setText('p95','N/A');
+    setText('successRate','N/A');
+    setText('molecularReads',Number(x.transactions_per_path).toLocaleString());
+    setText('molecularWrites',Number(x.transactions_per_path).toLocaleString());
+    ['errorsInjected','errorsRecovered','simulationTime','meanUtil','peakQueue','prefetchAttempts',
+     'prefetchCompleted','prefetchTime','enduranceFailures','maxRewriteCycles']
+      .forEach(id=>setText(id,'N/A'));
+    setText('overviewAnalysisStatus','Current Benchmark Simulator result loaded.');
+    const miniState=byId('overviewPipelineState'); if(miniState) miniState.textContent='BENCHMARK PROFILE READY';
+    const miniProgress=byId('miniProgress'); if(miniProgress) miniProgress.style.width='100%';
+    document.querySelectorAll('.mini-stage').forEach(el=>{el.classList.remove('active');el.classList.add('done');});
+  };
+
+  window.refreshBenchmarkReadWrite=async function(){
+    const btn=byId('runCoreLatency'); if(btn) btn.disabled=true;
+    setText('coreLatencyStatus','Refreshing Benchmark Simulator READ / WRITE analysis...');
+    try{
+      const x=await ensureBenchmarkResult();
+      setText('coldReadLatency',fmtMs(x.cold_read_latency_ms));
+      setText('hotReadLatency','N/A');
+      setText('writeLatency',fmtMs(x.write_latency_ms));
+      setText('roundtripLatency',fmtMs(x.roundtrip_latency_ms));
+      setText('coldHotRatio','N/A');
+      renderStageGrid('coldReadStages',x.cold_read_stage_mean_ms||{});
+      renderStageGrid('writeStages',x.write_stage_mean_ms||{});
+      setText('coreLatencyStatus','Benchmark READ / WRITE analysis refreshed. Hot-cache acceleration is not part of the benchmark model.');
+    }catch(error){
+      setText('coreLatencyStatus','Benchmark analysis failed.');
+      alert(error.message);
+    }finally{
+      if(btn) btn.disabled=false;
+    }
+  };
+
+  window.refreshBenchmarkTargets=async function(){
+    const btn=byId('loadTargetLatency'); if(btn) btn.disabled=true;
+    setText('targetLatencyStatus','Refreshing Benchmark Simulator target analysis...');
+    try{
+      const x=await ensureBenchmarkResult();
+      const cold=Number(x.cold_read_latency_ms||0);
+      const write=Number(x.write_latency_ms||0);
+      const round=Number(x.roundtrip_latency_ms||cold+write);
+      const coldMol=Number((x.cold_read_stage_mean_ms||{}).molecular_access||0);
+      const writeMol=Number((x.write_stage_mean_ms||{}).molecular_write||0);
+      const coldOverhead=Math.max(0,cold-coldMol);
+      const writeOverhead=Math.max(0,write-writeMol);
+      const roundOverhead=Math.max(0,round-coldMol-writeMol);
+      const rows=[10000,1000,100].map(target=>({
+        target_latency_ms:target,
+        modeled_mean_cold_read_ms:cold,
+        cold_read_target_feasible_with_current_model:cold<=target,
+        modeled_mean_write_ms:write,
+        write_target_feasible_with_current_model:write<=target,
+        modeled_mean_roundtrip_ms:round,
+        roundtrip_target_feasible_with_current_model:round<=target,
+        cold_read_available_physical_budget_ms:Math.max(0,target-coldOverhead),
+        write_available_physical_budget_ms:Math.max(0,target-writeOverhead),
+        roundtrip_available_physical_budget_ms:Math.max(0,target-roundOverhead)
+      }));
+      displayTargetLatency(rows);
+      setText('targetLatencyStatus','Benchmark target analysis refreshed.');
+    }catch(error){
+      setText('targetLatencyStatus','Benchmark target analysis failed.');
+      alert(error.message);
+    }finally{
+      if(btn) btn.disabled=false;
+    }
+  };
+
+  function paintBenchmarkPipeline(x){
+    resetPipelineAnalysis();
+    const read=x.cold_read_stage_mean_ms||{};
+    const write=x.write_stage_mean_ms||{};
+    const allStages=new Set([...Object.keys(read),...Object.keys(write)]);
+    allStages.forEach(stageId=>{
+      const el=document.querySelector(`[data-pipeline-stage="${stageId}"]`);
+      if(!el) return;
+      el.classList.remove('pending','running','skipped');
+      el.classList.add('done');
+      el.style.setProperty('--stage-progress','100%');
+      const time=el.querySelector('.stage-live-time');
+      if(time){
+        const rv=read[stageId], wv=write[stageId];
+        if(rv!==undefined && wv!==undefined) time.textContent=`R ${Number(rv).toFixed(1)} · W ${Number(wv).toFixed(1)} ms`;
+        else time.textContent=`${Number(rv!==undefined?rv:wv).toFixed(1)} ms`;
+      }
+    });
+    ['host_request','command_queue'].forEach(id=>{
+      const el=document.querySelector(`[data-pipeline-stage="${id}"]`);
+      if(el){el.classList.remove('pending','running','done');el.classList.add('skipped');}
+    });
+    setText('hostOperation','READ / WRITE benchmark');
+    setText('pipelineState','BENCHMARK PROFILE · COMPLETE');
+    const fill=byId('pipelineProgressFill'); if(fill) fill.style.width='100%';
+    setText('pipelineEta',`${Number(x.transactions_per_path).toLocaleString()} block operations / path`);
+    setText('pipelineBlock','Static representative-stage profile from the current Benchmark Simulator run; benchmark execution does not use live discrete-event telemetry.');
+    const view=byId('channelsView'); if(view) view.innerHTML='';
+    setText('channelSummary',`${Number(x.active_channel_count ?? Math.min(x.channels,x.transactions_per_path)).toLocaleString()} effective molecular channels active in the benchmark model.`);
+    setText('pipelineAnalysisStatus','Benchmark representative-path analysis refreshed.');
+  }
+
+  byId('refreshCoreLatency')?.addEventListener('click',async()=>{
+    await byId('runCoreLatency')?.click();
+  });
+
+  byId('refreshTargetLatency')?.addEventListener('click',async()=>{
+    await byId('loadTargetLatency')?.click();
+  });
+
+  byId('refreshTechnologyGap')?.addEventListener('click',async()=>{
+    await byId('runTechnologyGap')?.click();
+  });
+
+  byId('refreshOverview')?.addEventListener('click',async()=>{
+    const mode=window.getActiveSimulator?.()||'workload';
+    if(mode==='benchmark'){
+      setText('overviewAnalysisStatus','Refreshing Benchmark Simulator overview...');
+      try{window.displayBenchmarkOverview(await ensureBenchmarkResult());}
+      catch(error){setText('overviewAnalysisStatus','Benchmark overview refresh failed.');alert(error.message);}
+      return;
+    }
+    if(window.__lastTransactionResult && window.__lastTransactionConfig){
+      resetMetrics();
+      displayResult(window.__lastTransactionResult,window.__lastTransactionConfig);
+      setText('overviewAnalysisStatus','Current Transaction Simulator result restored.');
+    }else{
+      setText('overviewAnalysisStatus','Run Transaction Simulator first; no transaction result is available to refresh.');
+    }
+  });
+
+  byId('refreshPipeline')?.addEventListener('click',async()=>{
+    const mode=window.getActiveSimulator?.()||'workload';
+    if(mode==='benchmark'){
+      setText('pipelineAnalysisStatus','Refreshing Benchmark Simulator pathway analysis...');
+      try{paintBenchmarkPipeline(await ensureBenchmarkResult());}
+      catch(error){setText('pipelineAnalysisStatus','Benchmark pathway refresh failed.');alert(error.message);}
+      return;
+    }
+    if(typeof window.restoreTransactionPipeline==='function' && window.restoreTransactionPipeline()){
+      setText('pipelineAnalysisStatus','Latest Transaction Simulator pipeline state restored.');
+    }else{
+      setText('pipelineAnalysisStatus','Run Transaction Simulator first; no pipeline telemetry is available to refresh.');
+    }
+  });
+
+  async function runBenchmarkScaling(){
+    if(scalingRunning) return;
+    scalingRunning=true;
+    const btn=byId('refreshScaling'); const runBtn=byId('runScalingAnalysis'); if(btn) btn.disabled=true; if(runBtn) runBtn.disabled=true;
+    setText('scalingStatus','Running...');
+    setText('scalingAnalysisStatus','Running Benchmark Simulator channel sweep...');
+    const bars=byId('bars'); if(bars) bars.innerHTML='';
+    let channelCounts=getScalingChannels();
+    if(!channelCounts.length) channelCounts=[1,2,4,8,16,32,64,120];
+    const results=[];
+    try{
+      for(const channels of channelCounts){
+        const payload=benchmarkPayloadFromInputs(channels);
+        const resp=await fetch(API+'/benchmark/custom',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(payload)
+        });
+        const data=await resp.json();
+        if(!resp.ok || !data.ok) throw new Error(data.error||`Benchmark scaling failed at ${channels} channels`);
+        const x=data.result;
+        const throughput=Number(
+          x.mean_path_throughput_bytes_per_s ??
+          ((Number(x.cold_read_throughput_bytes_per_s||0)+Number(x.write_throughput_bytes_per_s||0))/2)
+        );
+        results.push({channels,throughput});
+      }
+      drawScalingBars(results,Number(byId('benchChannels').value));
+      setText('scalingStatus','Complete');
+      setText('scalingAnalysisStatus','Benchmark channel scaling refreshed.');
+      setText('scalingNote','Benchmark scaling shows mean READ/WRITE throughput across the selected molecular-channel sweep using the current payload, block size and path-acceleration values.');
+    }catch(error){
+      setText('scalingStatus','Failed');
+      setText('scalingAnalysisStatus','Benchmark channel scaling failed.');
+      alert(error.message);
+    }finally{
+      scalingRunning=false;
+      if(btn) btn.disabled=false;
+      if(runBtn) runBtn.disabled=false;
+    }
+  }
+
+  byId('runScalingAnalysis')?.addEventListener('click',()=>byId('refreshScaling')?.click());
+
+  byId('refreshScaling')?.addEventListener('click',async()=>{
+    const mode=window.getActiveSimulator?.()||'workload';
+    if(mode==='benchmark'){
+      await runBenchmarkScaling();
+      return;
+    }
+    const cfg=window.__lastTransactionConfig ? {...window.__lastTransactionConfig} : buildConfig();
+    setText('scalingAnalysisStatus','Running Transaction Simulator channel sweep...');
+    try{
+      await runScalingPreview(cfg);
+      setText('scalingAnalysisStatus','Transaction channel scaling refreshed.');
+    }catch(error){
+      setText('scalingAnalysisStatus','Transaction channel scaling failed.');
+      alert(error.message);
+    }
+  });
+})();
+</script>
+<script>
+/* v1.0 real backend progress telemetry */
+(function realBackendProgress(){
+  const tabHelp={
+    overview:'Inspect headline metrics for the currently active simulator run.',
+    readwrite:'Compare host-visible READ and WRITE behavior under the selected configuration.',
+    targets:'Explore engineering latency budgets and pathway-acceleration requirements.',
+    techgap:'Compare BioSSD targets with documented molecular-storage timing profiles.',
+    pipeline:'Inspect live UMDI execution telemetry and the detailed transaction-stage mapping.',
+    scaling:'Evaluate how modeled performance changes with molecular channel count.',
+    benchmark:'Run the standardized large-payload BioSSD benchmark and compare current output with the published reference.'
+  };
+  document.querySelectorAll('.workspace-tab').forEach(btn=>{
+    const text=tabHelp[btn.dataset.tab]; if(text){btn.title=text;btn.style.cursor='help';}
+  });
+
+  const compactIndex={
+    host_interface:0, controller:1, addressing:2,
+    molecular_access:3, sensing:3, molecular_write:3, write_verification:3,
+    basecalling:4, decoding:4, error_correction:4, encoding:4, buffer:5
+  };
+  const detailStageMap={
+    host_interface:'host_request', controller:'command_queue', addressing:'addressing',
+    molecular_access:'molecular_access', sensing:'sensing', basecalling:'basecalling',
+    decoding:'decoding', error_correction:'error_correction', encoding:'encoding',
+    molecular_write:'molecular_write', write_verification:'write_verification', buffer:'buffer'
+  };
+  let lastProgress=null;
+  let lastStageCounts={};
+  let telemetryEpoch=0;
+  let acceptTelemetry=false;
+  let seenCurrentRunActive=false;
+  let currentTelemetryRunId=null;
+
+  function activeBackendStages(p){
+    const counts=p.stage_counts||{};
+    const changed=[];
+    Object.entries(counts).forEach(([stage,value])=>{
+      const previous=Number(lastStageCounts[stage]||0);
+      if(Number(value||0)>previous) changed.push(stage);
+    });
+    lastStageCounts={...counts};
+    if(!changed.length && p.latest_stage) changed.push(p.latest_stage);
+    return changed;
+  }
+
+  function statusText(p,pct,latest,op){
+    const resultsCommitted=window.__biossdResultsCommitted===true;
+    if(p.status==='complete') return resultsCommitted ? 'SIMULATION COMPLETE' : 'READ/WRITE PATH COMPLETE · FINALIZING RESULTS';
+    if(p.status==='finalizing' || (p.status==='running' && pct>=100)) return 'READ/WRITE PATH COMPLETE · FINALIZING RESULTS';
+    if(p.status==='stopping') return 'STOPPING SIMULATION…';
+    if(p.status==='stopped') return 'SIMULATION STOPPED';
+    if(p.status==='error') return 'SIMULATION ERROR';
+    return `ENGINE ${pct.toFixed(1)}% · ${latest.replaceAll('_',' ').toUpperCase()}`;
+  }
+
+  function paintRealProgress(p){
+    if(!p || p.status==='idle') return;
+    const pct=Math.max(0,Math.min(100,Number(p.percent)||0));
+    const latest=p.latest_stage||'host_interface';
+    const op=p.latest_operation||'MIXED';
+    const activeStages=activeBackendStages(p);
+    const activeCompact=new Set(activeStages.map(stage=>compactIndex[stage]).filter(v=>v!==undefined));
+
+    const resultsCommitted=window.__biossdResultsCommitted===true;
+    const finalizingView=p.status==='finalizing' || (p.status==='running' && pct>=100) || (p.status==='complete' && !resultsCommitted);
+    document.querySelectorAll('.mini-stage').forEach((el,i)=>{
+      el.classList.toggle('active',p.status==='running' && pct<100 && activeCompact.has(i));
+      el.classList.toggle('done',p.status==='complete' || finalizingView);
+    });
+    const ms=document.getElementById('overviewPipelineState');
+    if(ms) ms.textContent=statusText(p,pct,latest,op);
+    const mf=document.getElementById('miniProgress');
+    if(mf){mf.style.width=pct+'%';mf.style.marginLeft='0';}
+
+    const activeDetail=new Set(activeStages.map(stage=>detailStageMap[stage]).filter(Boolean));
+    const counts=p.stage_counts||{};
+    document.querySelectorAll('[data-pipeline-stage]').forEach(el=>{
+      const id=el.dataset.pipelineStage;
+      el.classList.remove('running','done','pending');
+      if(p.status==='complete' && resultsCommitted) el.classList.add('done');
+      else if(finalizingView && Object.entries(detailStageMap).some(([backend,detail])=>detail===id && Number(counts[backend]||0)>0)) el.classList.add('done');
+      else if(p.status==='running' && pct<100 && activeDetail.has(id)) el.classList.add('running');
+      else el.classList.add('pending');
+    });
+
+    const ps=document.getElementById('pipelineState');
+    if(ps){
+      ps.textContent=(p.status==='running' && pct<100)
+        ? `ENGINE RUNNING · ${op}`
+        : statusText(p,pct,latest,op);
+    }
+    const pf=document.getElementById('pipelineProgressFill'); if(pf)pf.style.width=pct+'%';
+    const pe=document.getElementById('pipelineEta');
+    if(pe){
+      pe.textContent=finalizingView
+        ? 'transaction paths complete · aggregating results'
+        : p.status==='complete' && resultsCommitted
+          ? `${Number(p.total_requests||0).toLocaleString()} / ${Number(p.total_requests||0).toLocaleString()} requests processed`
+          : `${Number(p.processed_requests||0).toLocaleString()} / ${Number(p.total_requests||0).toLocaleString()} requests processed`;
+    }
+    const pb=document.getElementById('pipelineBlock');
+    if(pb){
+      if(p.status==='running' && pct<100) pb.textContent='UMDI layer activity observed during the latest backend polling window.';
+      else if(finalizingView) pb.textContent='Molecular transaction execution is complete; Python is assembling final statistics and response data.';
+      else if(p.status==='complete' && resultsCommitted) pb.textContent='Backend execution and result synchronization complete.';
+      else pb.textContent='Live execution telemetry from biossd_sim.py';
+    }
+
+    const ss=document.getElementById('scalingStatus');
+    if(ss && !window.scalingRunning) ss.textContent=(p.status==='running' && pct<100) ? `Simulation running · ${pct.toFixed(1)}%` : finalizingView ? 'Finalizing current simulation' : p.status==='stopping' ? 'Stopping current simulation' : p.status==='stopped' ? 'Simulation stopped' : 'Ready';
+
+    // Replace the old rotating placeholder messages as soon as real engine telemetry exists.
+    if(typeof runMessageTimer!=='undefined' && p.status==='running' && pct<100){
+      clearInterval(runMessageTimer); runMessageTimer=null;
+      setRunMessage(`Processing molecular transactions · ${pct.toFixed(1)}% · ${latest.replaceAll('_',' ')}`);
+    }else if(finalizingView){
+      if(typeof runMessageTimer!=='undefined'){clearInterval(runMessageTimer);runMessageTimer=null;}
+      setRunMessage('Finalizing simulation results…');
+    }else if(p.status==='complete' && resultsCommitted){
+      setRunMessage('Results synchronized with backend execution state.');
+    }
+    lastProgress=p;
+    window.__lastTransactionProgress=p;
+  }
+
+  window.restoreTransactionPipeline=function(){
+    if(window.__lastTransactionProgress){
+      paintRealProgress(window.__lastTransactionProgress);
+      return true;
+    }
+    return false;
+  };
+
+  async function pollProgress(){
+    const myEpoch=telemetryEpoch;
+    if(!acceptTelemetry) return null;
+    try{
+      if(!currentTelemetryRunId) return null;
+      const r=await fetch(API+'/progress?run_id='+encodeURIComponent(currentTelemetryRunId),{cache:'no-store'});
+      if(!r.ok)return null;
+      const j=await r.json();
+      // A /progress request can finish after /simulate has already returned.
+      // Ignore that stale response once this run has been committed complete.
+      if(myEpoch!==telemetryEpoch || !acceptTelemetry) return null;
+      if(j.ok){
+        const p=j.progress||{};
+        // Hard run identity gate: telemetry from any other simulation is irrelevant.
+        if(j.matches_requested_run===false || p.run_id!==currentTelemetryRunId) return null;
+        // At the start of a new run, /progress can briefly still contain the
+        // previous run's terminal state before /simulate has initialized the new run.
+        // Ignore terminal telemetry until this run has first been observed active.
+        if(!seenCurrentRunActive){
+          if(['running','finalizing','stopping'].includes(p.status)) seenCurrentRunActive=true;
+          else return null;
+        }
+        paintRealProgress(p);return p;
+      }
+    }catch(_e){}
+    return null;
+  }
+
+  window.markFrontendResultComplete=function(){
+    // /simulate has returned and the cards have been painted.
+    window.__biossdResultsCommitted=true;
+    // From this point, no late /progress response is allowed to move the UI back into RUNNING.
+    acceptTelemetry=false;
+    seenCurrentRunActive=false;
+    telemetryEpoch++;
+    clearInterval(enginePipelineTimer); enginePipelineTimer=null;
+    const base=lastProgress||{};
+    const completed={...base,status:'complete',percent:100,processed_requests:base.total_requests||base.processed_requests||0};
+    paintRealProgress(completed);
+  };
+
+  window.waitForBackendCompletion=async function(timeoutMs=2500){
+    const started=performance.now();
+    while(performance.now()-started<timeoutMs){
+      const p=await pollProgress();
+      if(p && ['complete','stopped','error'].includes(p.status)) return p.status;
+      await new Promise(resolve=>setTimeout(resolve,80));
+    }
+    // The /simulate response itself is authoritative that result assembly succeeded.
+    // If the final /progress poll races the HTTP response, synchronize the UI locally.
+    if(lastProgress && lastProgress.status==='finalizing'){
+      const synthetic={...lastProgress,status:'complete',percent:100,processed_requests:lastProgress.total_requests};
+      paintRealProgress(synthetic);
+      return 'complete';
+    }
+    return lastProgress?.status||'unknown';
+  };
+
+  beginWaitingPipeline=function(cfg){
+    resetPipeline();
+    currentTelemetryRunId=cfg._client_run_id||null;
+    telemetryEpoch++;
+    acceptTelemetry=true;
+    lastProgress=null;
+    lastStageCounts={};
+    seenCurrentRunActive=false;
+    $('pipelineState').textContent='ENGINE RUNNING · awaiting first telemetry';
+    $('pipelineEta').textContent='0 / '+Number(cfg.transactions).toLocaleString()+' requests processed';
+    $('pipelineBlock').textContent='Waiting for live execution telemetry from biossd_sim.py';
+    clearInterval(enginePipelineTimer);
+    pollProgress();
+    enginePipelineTimer=setInterval(pollProgress,250);
+  };
+
+  window.startMiniRunPipeline=function(){
+    const pipe=document.getElementById('overviewPipeline'); if(pipe)pipe.classList.add('is-running');
+    const state=document.getElementById('overviewPipelineState'); if(state)state.textContent='ENGINE STARTING';
+    document.querySelectorAll('.mini-stage').forEach(el=>el.classList.remove('active','done'));
+  };
+  window.stopMiniRunPipeline=function(label='READY'){
+    acceptTelemetry=false;
+    seenCurrentRunActive=false;
+    telemetryEpoch++;
+    clearInterval(enginePipelineTimer); enginePipelineTimer=null;
+    const state=document.getElementById('overviewPipelineState');
+    if(state && label!=='READY')state.textContent=label;
+    const ss=document.getElementById('scalingStatus'); if(ss && !window.scalingRunning && label==='READY')ss.textContent='Ready';
+  };
+})();
+</script>
+</body>
+</html>

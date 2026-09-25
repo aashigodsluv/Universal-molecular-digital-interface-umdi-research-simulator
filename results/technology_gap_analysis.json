@@ -1,0 +1,54 @@
+[
+  {
+    "profile_name": "Contemporary Demonstrated-Technology Composite",
+    "profile_type": "literature_reference",
+    "comparison_warning": "A documented comparison profile assembled from experimentally demonstrated molecular-storage timings. It is not a single integrated device and must not be interpreted as the performance of one physical system.",
+    "cold_read": {
+      "test_latency_ms": 2160000.0,
+      "umdi_target_latency_ms": 133.64075721576782,
+      "absolute_gap_ms": 2159866.3592427843,
+      "slowdown_factor_vs_umdi_target": 16162.7339219023,
+      "required_latency_reduction_pct": 99.99381292790667,
+      "meets_umdi_target": false
+    },
+    "write": {
+      "test_latency_ms": 43000.0,
+      "umdi_target_latency_ms": 159.1634294217905,
+      "absolute_gap_ms": 42840.83657057821,
+      "slowdown_factor_vs_umdi_target": 270.1625628211867,
+      "required_latency_reduction_pct": 99.62985248971677,
+      "meets_umdi_target": false
+    },
+    "roundtrip": {
+      "test_latency_ms": 2203000.0,
+      "umdi_target_latency_ms": 287.0990348907851,
+      "absolute_gap_ms": 2202712.900965109,
+      "slowdown_factor_vs_umdi_target": 7673.310364272174,
+      "required_latency_reduction_pct": 99.98696781502991,
+      "meets_umdi_target": false
+    },
+    "benchmark_basis": {
+      "cold_read_ms": {
+        "value_description": "Approximately 30 min automated preparation plus approximately 6 min nanopore read/online decoding in the Takahashi et al. end-to-end automated DNA-storage demonstration.",
+        "citation": "Takahashi et al. (2019), Scientific Reports 9, 4998",
+        "doi": "10.1038/s41598-019-41228-8",
+        "comparability_note": "This is a documented automated read-side workflow benchmark, not a direct measurement of a UMDI logical-block cold read."
+      },
+      "write_ms": {
+        "value_description": "43 s demonstrated generation of an arbitrary 64-bit molecular key using an acoustic liquid handler in ZAT-DNA.",
+        "citation": "ZAT-DNA (2026), Nature Communications",
+        "doi": "10.1038/s41467-026-72869-9",
+        "comparability_note": "This is a rapid molecular assembly benchmark and is not equivalent to a complete verified UMDI WRITE transaction."
+      },
+      "roundtrip_ms": {
+        "value_description": "Composite comparison obtained by adding the documented 43 s rapid-write benchmark to the 36 min automated read-side benchmark.",
+        "citation": "Composite of Takahashi et al. (2019) and ZAT-DNA (2026)",
+        "comparability_note": "This value was not measured in a single physical system. It is provided only to quantify the order-of-magnitude technology gap."
+      }
+    },
+    "notes": [
+      "DynaBytes (Jia et al., 2026) demonstrates CRUD-like molecular operations and real-time nanopore retrieval, but the publication does not provide a directly comparable sub-second host-visible READ/WRITE latency suitable for this numeric profile.",
+      "Researchers should replace this composite profile with measured values from their own hardware whenever available."
+    ]
+  }
+]

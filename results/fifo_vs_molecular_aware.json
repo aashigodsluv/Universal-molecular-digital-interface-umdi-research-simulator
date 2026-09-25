@@ -1,0 +1,148 @@
+[
+  {
+    "scheduler": "fifo",
+    "requests": 2000,
+    "completed": 1994,
+    "failed": 6,
+    "transaction_success_rate": 0.997,
+    "mean_latency_ms": 30324.650365497335,
+    "p95_latency_ms": 57115.87554607521,
+    "throughput_bytes_per_s": 135785.33552739726,
+    "cache_hits": 306,
+    "molecular_reads": 1086,
+    "molecular_writes": 608,
+    "errors_injected": 42,
+    "errors_recovered": 42,
+    "error_recovery_rate": 1.0,
+    "endurance_failures": 0,
+    "maximum_rewrite_cycles": 19,
+    "total_rewrite_cycles": 602,
+    "prefetch_enabled": false,
+    "prefetch_depth": 1,
+    "prefetch_attempts": 0,
+    "prefetch_completed": 0,
+    "prefetch_errors": 0,
+    "prefetch_errors_recovered": 0,
+    "prefetch_time_ms": 0.0,
+    "simulation_time_ms": 60149.52916879649,
+    "cold_read_count": 1086,
+    "hot_read_count": 306,
+    "write_count": 602,
+    "mean_queue_wait_ms": 30204.59543787268,
+    "active_channel_count": 4,
+    "mean_channel_utilization": 0.9994557165477218,
+    "max_channel_utilization": 0.9999966749531914,
+    "min_channel_utilization": 0.9985022401167818,
+    "channel_utilization": [
+      0.9985022401167818,
+      0.9993473514186587,
+      0.9999966749531914,
+      0.9999765997022553
+    ],
+    "channel_busy_time_ms": [
+      60059.439617013006,
+      60110.272663916134,
+      60149.329168796496,
+      60148.12165190474
+    ],
+    "channel_requests": [
+      484,
+      494,
+      500,
+      522
+    ],
+    "channel_completed": [
+      484,
+      493,
+      498,
+      519
+    ],
+    "channel_failed": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "channel_bytes_completed": [
+      1982464,
+      2019328,
+      2039808,
+      2125824
+    ],
+    "peak_queue_depth": 2000,
+    "mean_sampled_queue_depth": 997.503
+  },
+  {
+    "scheduler": "molecular_aware",
+    "requests": 2000,
+    "completed": 1994,
+    "failed": 6,
+    "transaction_success_rate": 0.997,
+    "mean_latency_ms": 13122.155529069307,
+    "p95_latency_ms": 25560.890106761373,
+    "throughput_bytes_per_s": 301775.42728353053,
+    "cache_hits": 1295,
+    "molecular_reads": 97,
+    "molecular_writes": 608,
+    "errors_injected": 2,
+    "errors_recovered": 2,
+    "error_recovery_rate": 1.0,
+    "endurance_failures": 0,
+    "maximum_rewrite_cycles": 19,
+    "total_rewrite_cycles": 602,
+    "prefetch_enabled": false,
+    "prefetch_depth": 1,
+    "prefetch_attempts": 0,
+    "prefetch_completed": 0,
+    "prefetch_errors": 0,
+    "prefetch_errors_recovered": 0,
+    "prefetch_time_ms": 0.0,
+    "simulation_time_ms": 27064.576044246194,
+    "cold_read_count": 97,
+    "hot_read_count": 1295,
+    "write_count": 602,
+    "mean_queue_wait_ms": 13068.605010738836,
+    "active_channel_count": 4,
+    "mean_channel_utilization": 0.9956165626432513,
+    "max_channel_utilization": 0.9998632899331602,
+    "min_channel_utilization": 0.9923955675283846,
+    "channel_utilization": [
+      0.9960969192842274,
+      0.9998632899331602,
+      0.9941104738272327,
+      0.9923955675283846
+    ],
+    "channel_busy_time_ms": [
+      26958.940819407337,
+      27060.876044246193,
+      26905.178515278756,
+      26858.765303344826
+    ],
+    "channel_requests": [
+      466,
+      407,
+      601,
+      526
+    ],
+    "channel_completed": [
+      465,
+      406,
+      599,
+      524
+    ],
+    "channel_failed": [
+      1,
+      1,
+      2,
+      2
+    ],
+    "channel_bytes_completed": [
+      1904640,
+      1662976,
+      2453504,
+      2146304
+    ],
+    "peak_queue_depth": 2000,
+    "mean_sampled_queue_depth": 997.503
+  }
+]

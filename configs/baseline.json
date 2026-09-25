@@ -1,0 +1,92 @@
+{
+  "seed": 20260812,
+  "channels": 4,
+  "cache_size": 16,
+  "cache_latency_ms": 0.2,
+  "scheduler": "molecular_aware",
+  "error_probability": 0.03,
+  "correction_success_probability": 0.98,
+  "write_failure_probability": 0.01,
+  "prefetch": {
+    "enabled": false,
+    "depth": 1
+  },
+  "endurance": {
+    "enabled": true,
+    "max_rewrites": 1000,
+    "degradation_start": 100,
+    "failure_probability_at_limit": 0.5,
+    "degradation_exponent": 2.0
+  },
+  "payload_scaling": {
+    "enabled": true,
+    "reference_block_size_bytes": 4096,
+    "model": "linear_payload_sensitive_stages",
+    "fixed_per_block_stages": [
+      "addressing",
+      "molecular_access"
+    ],
+    "payload_scaled_stages": [
+      "sensing",
+      "basecalling",
+      "decoding",
+      "error_correction",
+      "buffer",
+      "encoding",
+      "molecular_write",
+      "write_verification"
+    ],
+    "interpretation": "4096 bytes preserves the original simulator as the reference request. Payload-sensitive stage latency scales linearly with bytes. This is a computational scaling assumption, not a measured molecular law."
+  },
+  "latency_ms": {
+    "addressing": {
+      "kind": "normal",
+      "mean": 8,
+      "sd": 1.5
+    },
+    "molecular_access": {
+      "kind": "lognormal",
+      "mu": 3.9,
+      "sigma": 0.25
+    },
+    "sensing": {
+      "kind": "normal",
+      "mean": 35,
+      "sd": 5
+    },
+    "basecalling": {
+      "kind": "normal",
+      "mean": 18,
+      "sd": 3
+    },
+    "decoding": {
+      "kind": "normal",
+      "mean": 12,
+      "sd": 2
+    },
+    "error_correction": {
+      "kind": "normal",
+      "mean": 8,
+      "sd": 1.5
+    },
+    "buffer": {
+      "kind": "fixed",
+      "value": 1
+    },
+    "encoding": {
+      "kind": "normal",
+      "mean": 6,
+      "sd": 1
+    },
+    "molecular_write": {
+      "kind": "lognormal",
+      "mu": 4.8,
+      "sigma": 0.3
+    },
+    "write_verification": {
+      "kind": "normal",
+      "mean": 15,
+      "sd": 3
+    }
+  }
+}

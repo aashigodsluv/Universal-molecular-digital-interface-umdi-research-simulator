@@ -1,0 +1,18 @@
+{
+  "profile_name": "Optimized UMDI Large-File Target Model",
+  "profile_type": "computational_target",
+  "optimization_payload_bytes": 1073741824,
+  "optimization_payload_label": "1024 MB",
+  "objective": "Minimum modeled 1 GB WRITE latency",
+  "channels": 128,
+  "logical_block_size_bytes": 1048576,
+  "logical_block_size_label": "1 MB",
+  "molecular_write_speedup": 64,
+  "logical_blocks": 1024,
+  "modeled_write_latency_ms": 49187.305023799585,
+  "modeled_cold_read_latency_ms": 152023.76520943153,
+  "modeled_roundtrip_latency_ms": 201211.07023323112,
+  "write_throughput_bytes_per_s": 21829653.474213786,
+  "cold_read_throughput_bytes_per_s": 7062986.6489675995,
+  "interpretation": "This profile is the fastest configuration found within the defined computational search space. It is an engineering target, not a claim of present physical molecular-storage performance."
+}
